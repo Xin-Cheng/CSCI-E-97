@@ -42,5 +42,11 @@ public class Triple {
 		Triple triple = new Triple(cdd, predicate, cxx);
 		System.out.println(triple.getIdentifier());
 		System.out.println(triple.getCreateDate());
+		Importer importer = new Importer();
+		try {
+			importer.importTripleFile("inputTriples.nt");
+		} catch (ImportException ie) {
+			System.out.println("Import Exception!");
+		}
 	}
 }
