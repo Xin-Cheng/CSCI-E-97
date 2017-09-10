@@ -17,16 +17,6 @@ public class Importer {
             	} catch (ImportException ie) {
 					System.out.println("Invalid line.");
 				}
-//                System.out.println(line);
-//                try {
-//                	
-//                } catch (Exception e) {
-//					
-//				}
-//                
-//                if(true) {
-//                	throw new ImportException("Processing Error!");
-//                }
             }   
             bufferedReader.close();  
 		} catch(FileNotFoundException ex) { /* FileReader exception */

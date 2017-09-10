@@ -21,5 +21,13 @@ public class Test {
 		} catch (ImportException ie) {
 			System.out.println("Import Exception: " + ie.getMessage());
 		}
+		QueryEngine queryEngine = new QueryEngine();
+		
+		System.out.println("---------------------------------------");
+		try {
+			queryEngine.executeQueryFile("sampleQuery.nt");
+		} catch (QueryEngineException qeex) {
+			System.out.println("Query Exception: " + qeex.getMessage());
+		}
 	}
 }
