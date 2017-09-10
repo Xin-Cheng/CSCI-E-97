@@ -12,7 +12,12 @@ public class Importer {
 			FileReader fileReader = new FileReader(fileName);
 	        BufferedReader bufferedReader = new BufferedReader(fileReader);
             while((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+            	try {
+            		parse(line);
+            	} catch (ImportException ie) {
+					System.out.println("Invalid line.");
+				}
+//                System.out.println(line);
 //                try {
 //                	
 //                } catch (Exception e) {
@@ -32,4 +37,16 @@ public class Importer {
 	}
 	
 	/* Help function:Parse individual line and throw line parse exception */
+	private void parse(String line) throws ImportException {
+		/* Trim leading and trailing whitespace. */
+		String cleanLine = line.trim();
+		String[] triple = cleanLine.split("\\s+");
+		if(triple.length != 3)
+			throw new ImportException("Not a triple.");
+		
+		for (String string : triple) {
+			System.out.print(string + "+");
+		}
+		System.out.println();
+	}
 }
