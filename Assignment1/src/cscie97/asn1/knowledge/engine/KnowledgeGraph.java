@@ -1,8 +1,8 @@
 package cscie97.asn1.knowledge.engine;
 
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Set;
-
-import com.sun.javafx.collections.MappingChange.Map;
 
 public class KnowledgeGraph {
 	private Map<String, Node> nodeMap;
@@ -10,7 +10,26 @@ public class KnowledgeGraph {
 	private Map<String, Triple> tripleMap;
 	private Map<String, Set<Triple>> queryMapSet;
 	
+	public KnowledgeGraph() {
+		nodeMap = new HashMap<>();
+		predicateMap = new HashMap<>();
+		tripleMap = new HashMap<>();
+		queryMapSet = new HashMap<>();		
+	}
+	
 	public void importTriple(String subject, String predicate, String object) {
+		Node sNode = new Node(subject);
+		Predicate p = new Predicate(predicate);
+		Node oNode = new Node(object);
+		Triple triple = new Triple(sNode, p, oNode);
+		if(!nodeMap.containsKey(sNode.getIdentifier()))
+			nodeMap.put(sNode.getIdentifier(), sNode);
+		if(!nodeMap.containsKey(oNode.getIdentifier()))
+			nodeMap.put(oNode.getIdentifier(), oNode);
+		if(!predicateMap.containsKey(p.getIdentifier()))
+			predicateMap.put(p.getIdentifier(), p);
+		if(!tripleMap.containsKey(triple.getIdentifier()))
+			tripleMap.put(triple.getIdentifier(), triple);
 		
 	}
 	
@@ -19,22 +38,26 @@ public class KnowledgeGraph {
 		return queryResult;
 	}
 	
-	public KnowledgeGraph getInstance(String identifier) {
+	public KnowledgeGraph getInstance() {
 		return this;
 	}
 
 	public Node getNode(String identifier){
-		Node node = null;
-		return node;
+		if(!nodeMap.containsKey(identifier))
+			nodeMap.put(identifier, new Node(identifier));
+		return nodeMap.get(identifier);
 	}
 	
 	public Predicate getPredicate(String identifier) {
-		Predicate predicate = null;
-		return predicate;
+		if(!predicateMap.containsKey(identifier))
+			predicateMap.put(identifier, new Predicate(identifier));
+		return predicateMap.get(identifier);
 	}
 	
 	public Triple getTriple(Node subject, Predicate predicate, Node object) {
-		Triple triple = null;
-		return triple;
+		Triple triple = new Triple(subject, predicate, object);
+		if(!tripleMap.containsKey(triple.getIdentifier()))
+			tripleMap.put(triple.getIdentifier(), triple);
+		return tripleMap.get(triple.getIdentifier());
 	}
 }
