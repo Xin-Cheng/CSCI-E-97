@@ -26,10 +26,13 @@ public class QueryEngine {
 		Set<Triple> queryResult = knowledgeGraph.executeQuery(tripleQuery[0], tripleQuery[1], tripleQuery[2]);
 		if(queryResult == null)
 			System.out.println(queryResult);
-		else
+		else {
+			System.out.println(query);
 			for (Triple triple : queryResult) {
-				System.out.println(triple.getIdentifier());
+				System.out.println(triple.getIdentifier() + ".");
 			}
+			System.out.println();
+		}
 	}
 	
 	public void executeQueryFile(String fileName) throws QueryEngineException {

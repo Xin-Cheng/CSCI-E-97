@@ -39,10 +39,7 @@ public class Importer {
 			throw new ImportException("Missing a terminator.");
 		
 		triple[triple.length - 1] = triple[triple.length - 1].substring(0, triple[triple.length - 1].length() - 1); /* Remove the terminator. */
-		for (String string : triple) {
-			System.out.print(string + "+");
-		}
-		System.out.println();
+
 		return triple;
 	}
 }
