@@ -5,12 +5,13 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class KnowledgeGraph {
+	private static KnowledgeGraph instance;
 	private Map<String, Node> nodeMap;
 	private Map<String, Predicate> predicateMap;
 	private Map<String, Triple> tripleMap;
 	private Map<String, Set<Triple>> queryMapSet;
 	
-	public KnowledgeGraph() {
+	private KnowledgeGraph() {
 		nodeMap = new HashMap<>();
 		predicateMap = new HashMap<>();
 		tripleMap = new HashMap<>();
@@ -31,6 +32,7 @@ public class KnowledgeGraph {
 		if(!tripleMap.containsKey(triple.getIdentifier()))
 			tripleMap.put(triple.getIdentifier(), triple);
 		
+		
 	}
 	
 	public Set<Triple> executeQuery(String subject, String predicate, String object) {
@@ -38,8 +40,10 @@ public class KnowledgeGraph {
 		return queryResult;
 	}
 	
-	public KnowledgeGraph getInstance() {
-		return this;
+	public static KnowledgeGraph getInstance() {
+		if(instance == null)
+			instance = new KnowledgeGraph();
+		return instance;
 	}
 
 	public Node getNode(String identifier){

@@ -16,7 +16,8 @@ public class QueryEngine {
 
 		if(tripleQuery.length != 3)
 			throw new QueryEngineException("Not a well formed query.");
-		
+		if(!tripleQuery[2].substring(tripleQuery[2].length() - 1).equals("."))
+			throw new QueryEngineException("Missing a terminator.");
 		for (String string : tripleQuery) {
 			System.out.print(string + "+");
 		}
@@ -29,7 +30,12 @@ public class QueryEngine {
 			FileReader fileReader = new FileReader(fileName);
 	        BufferedReader bufferedReader = new BufferedReader(fileReader);
             while((line = bufferedReader.readLine()) != null) {
-        		executeQuery(line);
+            	try {
+            		executeQuery(line);
+            	} catch (QueryEngineException qeex) {
+					System.out.println(qeex.getMessage());
+				}
+        		
             }   
             bufferedReader.close();  
 		} catch(FileNotFoundException ex) { /* FileReader exception */

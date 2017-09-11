@@ -15,7 +15,7 @@ public class Importer {
             	try {
             		parse(line);
             	} catch (ImportException ie) {
-					System.out.println("Invalid line.");
+					System.out.println(ie.getMessage());
 				}
             }   
             bufferedReader.close();  
@@ -33,6 +33,8 @@ public class Importer {
 		String[] triple = cleanLine.split("\\s+");
 		if(triple.length != 3)
 			throw new ImportException("Not a triple.");
+		if(!triple[2].substring(triple[2].length() - 1).equals("."))
+			throw new ImportException("Missing a terminator.");
 		
 		for (String string : triple) {
 			System.out.print(string + "+");
