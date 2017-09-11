@@ -13,11 +13,13 @@ public class QueryEngine {
 		
 		String cleanQuery = query.trim();
 		String[] tripleQuery = cleanQuery.split("\\s+");
-
+		
 		if(tripleQuery.length != 3)
 			throw new QueryEngineException("Not a well formed query.");
 		if(!tripleQuery[2].substring(tripleQuery[2].length() - 1).equals("."))
 			throw new QueryEngineException("Missing a terminator.");
+		
+		tripleQuery[tripleQuery.length - 1] = tripleQuery[tripleQuery.length - 1].substring(0, tripleQuery[tripleQuery.length - 1].length() - 1); /* Remove the terminator. */
 		for (String string : tripleQuery) {
 			System.out.print(string + "+");
 		}
@@ -35,7 +37,6 @@ public class QueryEngine {
             	} catch (QueryEngineException qeex) {
 					System.out.println(qeex.getMessage());
 				}
-        		
             }   
             bufferedReader.close();  
 		} catch(FileNotFoundException ex) { /* FileReader exception */
