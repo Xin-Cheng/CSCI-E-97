@@ -15,6 +15,8 @@ public class Test {
 //		Triple triple = new Triple(cdd, predicate, cxx);
 //		System.out.println(triple.getIdentifier());
 //		System.out.println(triple.getCreateDate());
+		
+		KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
 		Importer importer = new Importer();
 		try {
 			importer.importTripleFile("inputTriples.nt");

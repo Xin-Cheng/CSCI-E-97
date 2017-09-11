@@ -88,7 +88,6 @@ public class KnowledgeGraph {
 			System.out.println(Arrays.toString(addWord.toArray()));
 			System.out.println(Arrays.toString(addSymbol.toArray()));
 		}
-		preCompute(words.subList(1, words.size() - 1), result);
+		preCompute(words.subList(1, words.size()), result);
 	}
-	
 }
