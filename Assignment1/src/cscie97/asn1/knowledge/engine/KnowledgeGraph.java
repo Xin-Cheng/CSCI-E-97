@@ -50,8 +50,11 @@ public class KnowledgeGraph {
 	}
 	
 	public Set<Triple> executeQuery(String subject, String predicate, String object) {
-		Set<Triple> queryResult = null;
-		return queryResult;
+		String query = subject + " " + predicate + " " + object;
+		if(queryMapSet.containsKey(query))
+			return queryMapSet.get(query);
+		else
+			return null;
 	}
 	
 	public static KnowledgeGraph getInstance() {

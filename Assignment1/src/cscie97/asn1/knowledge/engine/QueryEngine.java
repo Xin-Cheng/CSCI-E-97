@@ -4,10 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Set;
 
 public class QueryEngine {
 	public void executeQuery(String query) throws QueryEngineException {
 		/* Clean query string.*/
+		KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
 		if(query == null)
 			throw new QueryEngineException("Null query.");
 		
@@ -20,10 +22,14 @@ public class QueryEngine {
 			throw new QueryEngineException("Missing a terminator.");
 		
 		tripleQuery[tripleQuery.length - 1] = tripleQuery[tripleQuery.length - 1].substring(0, tripleQuery[tripleQuery.length - 1].length() - 1); /* Remove the terminator. */
-		for (String string : tripleQuery) {
-			System.out.print(string + "+");
-		}
-		System.out.println();
+
+		Set<Triple> queryResult = knowledgeGraph.executeQuery(tripleQuery[0], tripleQuery[1], tripleQuery[2]);
+		if(queryResult == null)
+			System.out.println(queryResult);
+		else
+			for (Triple triple : queryResult) {
+				System.out.println(triple.getIdentifier());
+			}
 	}
 	
 	public void executeQueryFile(String fileName) throws QueryEngineException {
