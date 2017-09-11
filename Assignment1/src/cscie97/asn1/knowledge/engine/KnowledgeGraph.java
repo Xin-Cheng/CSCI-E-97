@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.Arrays;
 
@@ -26,20 +27,26 @@ public class KnowledgeGraph {
 		Predicate p = new Predicate(predicate);
 		Node oNode = new Node(object);
 		Triple triple = new Triple(sNode, p, oNode);
-		if(!nodeMap.containsKey(sNode.getIdentifier()))
+		if(!nodeMap.containsKey(sNode.getIdentifier())) /* Update node map if there is a new node */
 			nodeMap.put(sNode.getIdentifier(), sNode);
-		if(!nodeMap.containsKey(oNode.getIdentifier()))
+		if(!nodeMap.containsKey(oNode.getIdentifier())) 
 			nodeMap.put(oNode.getIdentifier(), oNode);
-		if(!predicateMap.containsKey(p.getIdentifier()))
+		if(!predicateMap.containsKey(p.getIdentifier())) /* Update predicate map if there is a new predicate */
 			predicateMap.put(p.getIdentifier(), p);
-		if(!tripleMap.containsKey(triple.getIdentifier()))
-			tripleMap.put(triple.getIdentifier(), triple);
-		
-		/* Store triple to a list for query generation. */
-		List<String> words = new ArrayList<>(Arrays.asList(subject, predicate, object));
-		List<List<String>> queries = new ArrayList<>();
-		queries.add(new ArrayList<>());
-		preCompute(words, queries);
+		if(!tripleMap.containsKey(triple.getIdentifier())) { /* Update triple map and query map set if there is a new triple */
+			tripleMap.put(triple.getIdentifier(), triple); /* Update triple map */
+			/* Update query map set */
+			List<String> words = new ArrayList<>(Arrays.asList(subject, predicate, object)); /* Store triple to a list for query generation. */
+			List<List<String>> queries = new ArrayList<>();
+			queries.add(new ArrayList<>());
+			queries = preCompute(words, queries); /* Pre-compute all the possible queries */
+			for (List<String> list : queries) {
+				String query = String.join(" ", list);
+				if(!queryMapSet.containsKey(query))
+					queryMapSet.put(query, new HashSet<>());
+				queryMapSet.get(query).add(triple);
+			}
+		}
 	}
 	
 	public Set<Triple> executeQuery(String subject, String predicate, String object) {
@@ -73,9 +80,9 @@ public class KnowledgeGraph {
 	}
 	
 	/* Help function: generate all possible queries of a single triple and update queryMapSet. */
-	private void preCompute(List<String> words, List<List<String>> queries){
+	private List<List<String>> preCompute(List<String> words, List<List<String>> queries){
 		if(queries.get(0).size() == 3)
-			return;
+			return queries;
 		
 		List<List<String>> result = new ArrayList<>();
 		for (int i = 0; i < queries.size(); i++) {
@@ -85,9 +92,7 @@ public class KnowledgeGraph {
 			addSymbol.add("?");
 			result.add(addWord);
 			result.add(addSymbol);
-			System.out.println(Arrays.toString(addWord.toArray()));
-			System.out.println(Arrays.toString(addSymbol.toArray()));
 		}
-		preCompute(words.subList(1, words.size()), result);
+		return preCompute(words.subList(1, words.size()), result);
 	}
 }
