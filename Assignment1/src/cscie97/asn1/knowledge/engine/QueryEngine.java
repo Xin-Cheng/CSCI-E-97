@@ -16,6 +16,7 @@ public class QueryEngine {
 		String cleanQuery = query.trim();
 		String[] tripleQuery = cleanQuery.split("\\s+");
 		
+		/* Not well formatted queries are not processed. */
 		if(tripleQuery.length != 3)
 			throw new QueryEngineException("Not a well formed query.");
 		if(!tripleQuery[2].substring(tripleQuery[2].length() - 1).equals("."))

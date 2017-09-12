@@ -28,7 +28,7 @@ public class Importer {
 		}
 	}
 	
-	/* Help function:Parse individual line and throw line parse exception */
+	/* Help function:Parse individual line and throw line parse exception. Triple is stored in an array. */
 	private String[] parse(String line) throws ImportException {
 		/* Trim leading and trailing whitespace. */
 		String cleanLine = line.trim();
@@ -36,10 +36,8 @@ public class Importer {
 		if(triple.length != 3)
 			throw new ImportException("Not a triple.");
 		if(!triple[2].substring(triple[2].length() - 1).equals("."))
-			throw new ImportException("Missing a terminator.");
-		
+			throw new ImportException("Missing a terminator.");	
 		triple[triple.length - 1] = triple[triple.length - 1].substring(0, triple[triple.length - 1].length() - 1); /* Remove the terminator. */
-
 		return triple;
 	}
 }

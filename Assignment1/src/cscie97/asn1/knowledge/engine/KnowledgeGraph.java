@@ -27,6 +27,7 @@ class KnowledgeGraph {
 		Predicate p = new Predicate(predicate);
 		Node oNode = new Node(object);
 		Triple triple = new Triple(sNode, p, oNode);
+		
 		if(!nodeMap.containsKey(sNode.getIdentifier())) /* Update node map if there is a new node */
 			nodeMap.put(sNode.getIdentifier(), sNode);
 		if(!nodeMap.containsKey(oNode.getIdentifier())) 
