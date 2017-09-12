@@ -2,7 +2,7 @@ package cscie97.asn1.knowledge.engine;
 
 import java.time.Instant;
 
-public class Node {
+class Node {
 	private String identifier;
 	private long createDate;
 	

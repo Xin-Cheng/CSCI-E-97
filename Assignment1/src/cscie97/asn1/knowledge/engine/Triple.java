@@ -2,7 +2,7 @@ package cscie97.asn1.knowledge.engine;
 
 import java.time.Instant;
 
-public class Triple {
+class Triple {
 	/* Properties */
 	private String identifier;
 	private long createDate;
@@ -26,5 +26,17 @@ public class Triple {
 	
 	public long getCreateDate(){
 		return createDate;
+	}
+	
+	public Node getSubject(){
+		return subject;
+	}
+	
+	public Predicate getPredicate(){
+		return predicate;
+	}
+	
+	public Node getObject(){
+		return object;
 	}
 }
