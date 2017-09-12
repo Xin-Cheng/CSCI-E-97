@@ -82,7 +82,7 @@ public class KnowledgeGraph {
 		return tripleMap.get(triple.getIdentifier());
 	}
 	
-	/* Help function: generate all possible queries of a single triple and update queryMapSet. */
+	/* Help function: generate all possible queries of a single triple. */
 	private List<List<String>> preCompute(List<String> words, List<List<String>> queries){
 		if(queries.get(0).size() == 3)
 			return queries;
