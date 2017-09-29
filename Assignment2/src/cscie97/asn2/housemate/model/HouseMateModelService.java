@@ -8,4 +8,23 @@ public class HouseMateModelService {
 			instance = new HouseMateModelService();
 		return instance;
 	}
+	
+	public void executeCommand(String command){
+		System.out.println(command);
+	}
+	public void addOccupant(String houseName){
+		
+	}
+	
+	public void define(String command) {
+		
+	}
+	
+	public void setStatus(String command){
+		
+	}
+	
+	public void show(String command) {
+		
+	}
 }
