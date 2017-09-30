@@ -1,5 +1,6 @@
 package cscie97.asn2.housemate.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Room {
@@ -15,6 +16,8 @@ public class Room {
 		this.floor = floor;
 		this.type = type;
 		this.windowCount = windowCount;
+		sensorMap = new HashMap<>();
+		applianceMap = new HashMap<>();
 	}
 	
 	public String getName(){

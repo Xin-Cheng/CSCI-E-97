@@ -24,4 +24,8 @@ public class Sensor {
 	public Room getLocation(){
 		return location;
 	}
+	
+	public void print(){
+		System.out.println("name: " + name); 
+	}
 }

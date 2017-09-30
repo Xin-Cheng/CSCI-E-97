@@ -36,23 +36,31 @@ public class CommandLineInterface {
 		switch (firstWord) {
 		case "define":
 			switch (secondWord) {
-			case "house":
-				String address = "";
-				for (int i = 4; i < words.length; i++ )
-					address = address + " " + words[i];
-				houseMateModelService.defineHouse(words[2], address);
-				break;
-			case "room":
-				try {
-					houseMateModelService.defineRoom(words[2], Integer.parseInt(words[4]), words[6], Integer.parseInt(words[10]), words[8]);
-				} catch (ObjectNotFoundException onfe) {
-					System.out.println(onfe.getMessage());
-				}
-				break;
-			case "sensor":
-				
-			default:
-				break;
+				case "house":
+					String address = "";
+					for (int i = 4; i < words.length; i++ )
+						address = address + " " + words[i];
+					houseMateModelService.defineHouse(words[2], address);
+					break;
+				case "room":
+					try {
+						houseMateModelService.defineRoom(words[2], Integer.parseInt(words[4]), words[6], Integer.parseInt(words[10]), words[8]);
+					} catch (ObjectNotFoundException onfe) {
+						System.out.println(onfe.getMessage());
+					}
+					break;
+				case "occupant":
+					houseMateModelService.defineOccupant(words[2], words[4]);
+					break;
+				case "sensor":
+					try {
+						String[] names = words[6].split(":");
+						houseMateModelService.defineSensor(words[2], words[4], names[0], names[1]);
+					} catch (ObjectNotFoundException ex) {
+						System.out.println(ex.getMessage());
+					}
+				default:
+					break;
 			}
 			break;
 		case "add":

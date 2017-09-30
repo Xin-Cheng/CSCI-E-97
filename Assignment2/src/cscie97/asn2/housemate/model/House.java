@@ -1,5 +1,6 @@
 package cscie97.asn2.housemate.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
@@ -18,6 +19,8 @@ public class House {
 	public House(String name, String address) {
 		this.name = name;
 		this.address = address;
+		roomMap = new HashMap<>();
+		occupantMap = new HashMap<>();
 	}
 	
 	public String getName(){

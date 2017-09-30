@@ -1,11 +1,12 @@
 package cscie97.asn2.housemate.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class HouseMateModelService {
 	private static HouseMateModelService instance;
-	private Map<String, House> houseMap;
-	private Map<String, Occupant> occupantMap;
+	private Map<String, House> houseMap = new HashMap<>();
+	private Map<String, Occupant> occupantMap = new HashMap<>();
 	
 	public static HouseMateModelService getInstance(){
 		if(instance == null)
@@ -15,6 +16,7 @@ public class HouseMateModelService {
 	
 	public void defineHouse(String name, String address) {
 		House house = new House(name, address);
+		house.print();
 		houseMap.put(house.getName(), house);
 	}
 	
@@ -22,14 +24,18 @@ public class HouseMateModelService {
 		if(!houseMap.containsKey(houseName))
 			throw new ObjectNotFoundException("House Not Fount!");
 		Room room = new Room(name, floor, type, windowsCount);
+		room.print();
 		houseMap.get(houseName).addRoom(room);
 	}
 	
 	public void defineOccupant(String name, String type) {
 		if(occupantMap.containsKey(name))
 			System.out.println("You have already defined an occupant: " + name + "!");
-		else
-			occupantMap.put(name, new Occupant(name, type));
+		else {
+			Occupant occupant = new Occupant(name, type);
+			occupant.print();
+			occupantMap.put(name, occupant);
+		}
 	}
 		
 	public void defineSensor(String name, String type, String houseName, String roomName) throws ObjectNotFoundException{
@@ -43,12 +49,15 @@ public class HouseMateModelService {
 			switch (type) {
 			case "smoke_detector":
 				sensor = new SmokeDetector(name);
+				sensor.print();
 				break;
 			case "camera":
 				sensor = new Camera(name);
+				sensor.print();
 				break;
 			default:
 				sensor = new Ava(name);
+				sensor.print();
 				break;
 			}
 			houseMap.get(houseName).getRoom(roomName).addSensor(sensor);
