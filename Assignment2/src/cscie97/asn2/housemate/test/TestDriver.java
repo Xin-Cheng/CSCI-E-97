@@ -13,6 +13,5 @@ public class TestDriver {
 		} catch (CommandException ce) {
 			System.out.println(ce.getMessage());
 		}
-		
 	}
 }

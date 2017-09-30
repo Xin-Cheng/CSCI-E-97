@@ -1,10 +1,10 @@
 package cscie97.asn2.housemate.model;
 
 public class Sensor {
-	private String name;
-	private String state;
-	private Room location;
-	
+	protected String name;
+	protected String state;
+	protected Room location;
+		
 	public Sensor() {
 		
 	}

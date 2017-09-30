@@ -8,4 +8,11 @@ public class Occupant {
 		this.name = name;
 		this.type = type;
 	}
+	
+	public String getName(){
+		return name;
+	}
+	public void print(){
+		System.out.println("Occupant name: " + name + " type: " + type);
+	}
 }
