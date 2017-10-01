@@ -24,6 +24,13 @@ public class Room {
 		return name;
 	}
 	
+	public Sensor getSensor(String name) {
+		return sensorMap.get(name);
+	}
+	
+	public Appliance getAppliance(String name) {
+		return applianceMap.get(name);
+	}
 	public void addSensor(Sensor sensor){
 		sensorMap.put(sensor.getName(), sensor);
 	}

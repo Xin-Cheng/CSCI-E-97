@@ -59,6 +59,15 @@ public class CommandLineInterface {
 					} catch (ObjectNotFoundException ex) {
 						System.out.println(ex.getMessage());
 					}
+					break;
+				case "appliance":
+					try {
+						String[] names = words[6].split(":");
+						houseMateModelService.defineAppliance(words[2], words[4], names[0], names[1]);
+					} catch (ObjectNotFoundException ex) {
+						System.out.println(ex.getMessage());
+					}
+					break;
 				default:
 					break;
 			}
@@ -69,11 +78,10 @@ public class CommandLineInterface {
 			} catch (ObjectNotFoundException ex) {
 				System.out.println(ex.getMessage());
 			}
+			break;
+		case "set":
 			
 			break;
-//		case "set":
-//			setStatus(words);
-//			break;
 //		case "show":
 //			show(words);
 //			break;

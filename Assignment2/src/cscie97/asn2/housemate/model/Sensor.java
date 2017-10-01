@@ -25,6 +25,9 @@ public class Sensor {
 		return location;
 	}
 	
+	public void setStatus(String statusName, String value){
+		state = value;
+	}
 	public void print(){
 		System.out.println("name: " + name); 
 	}
