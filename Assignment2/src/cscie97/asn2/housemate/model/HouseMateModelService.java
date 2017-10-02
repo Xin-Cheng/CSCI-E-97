@@ -116,12 +116,31 @@ public class HouseMateModelService {
 		
 	}
 	
-	public void setSensorStatus(String houseName, String roomName, String name, String statusName, String value){
-		
+	public void setSensorStatus(String houseName, String roomName, String name, String statusName, String value) throws ObjectNotFoundException{
+		try {
+			if(!houseMap.containsKey(houseName))
+				throw new ObjectNotFoundException("House Not Fount!");
+			else if(!houseMap.get(houseName).containsRoom(roomName))
+				throw new ObjectNotFoundException("Room Not Fount!");
+			else			
+				houseMap.get(houseName).getRoom(roomName).getSensor(name).setStatus(statusName, value);
+		} catch (SettingException ex) {
+			System.out.println(ex.getMessage());
+		}
 	}
 	
-	public void setApplianceStatus(String houseName, String roomName, String name, String statusName, String value){
-		
+	public void setApplianceStatus(String houseName, String roomName, String name, String statusName, String value) throws ObjectNotFoundException{
+		try {
+			if(!houseMap.containsKey(houseName))
+				throw new ObjectNotFoundException("House Not Fount!");
+			else if(!houseMap.get(houseName).containsRoom(roomName))
+				throw new ObjectNotFoundException("Room Not Fount!");
+			else			
+				houseMap.get(houseName).getRoom(roomName).getAppliance(name).setStatus(statusName, value);
+			houseMap.get(houseName).getRoom(roomName).getAppliance(name).print();
+		} catch (SettingException ex) {
+			System.out.println(ex.getMessage());
+		}
 	}
 	
 	public void show(String[] command) {

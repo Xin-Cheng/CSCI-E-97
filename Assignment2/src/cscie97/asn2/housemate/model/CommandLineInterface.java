@@ -80,7 +80,23 @@ public class CommandLineInterface {
 			}
 			break;
 		case "set":
-			
+			String[] names = words[2].split(":");
+			switch (secondWord) {
+				case "sensor":
+					try {
+						houseMateModelService.setSensorStatus(names[0], names[1], names[2], words[4], words[6]);
+					} catch (ObjectNotFoundException ex) {
+						System.out.println(ex.getMessage());
+					}
+					break;
+				case "appliance":
+					try {
+						houseMateModelService.setApplianceStatus(names[0], names[1], names[2], words[4], words[6]);
+					} catch (ObjectNotFoundException ex) {
+						System.out.println(ex.getMessage());
+					}
+					break;
+			}
 			break;
 //		case "show":
 //			show(words);
