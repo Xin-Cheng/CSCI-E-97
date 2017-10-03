@@ -10,18 +10,33 @@ import javax.management.Query;
 import cscie97.asn1.knowledge.engine.KnowledgeGraph;
 import cscie97.asn1.knowledge.engine.QueryEngine;
 
+/**
+ * The CommandLineInterface class is responsible for reading command from input setup file. It parse each
+ * line read from the setup file and passes the result to corresponding functions in HouseMateModelService.
+ *
+ * @author Xin
+ */
 public class CommandLineInterface {
 	
+	/**
+     * Public default constructor
+     */
 	public CommandLineInterface() {
 		
 	}
 	
+	/**
+     * Public method for importing setup file. 
+     * @param inputFileName name of the setup file
+	 * @throws Command on error accesing file
+     */
 	public void importFile(String fileName) throws CommandException{
 		String line = null;
 		try {
 			FileReader fileReader = new FileReader(fileName);
 	        BufferedReader bufferedReader = new BufferedReader(fileReader);
             while((line = bufferedReader.readLine()) != null) {
+            	System.out.println(line);
         		executeCommand(line);
             }   
             bufferedReader.close();  
@@ -32,10 +47,19 @@ public class CommandLineInterface {
 		}
 	}
 	
+	/**
+     * Public method for executing a command.
+     *
+     * @param command a single line from setup file
+     */
 	public void executeCommand(String command){
+		if(command.isEmpty() || command.substring(0, 1).equals("#"))
+			return;
+		
 		HouseMateModelService houseMateModelService = HouseMateModelService.getInstance();
 		KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
 		
+		// split command by space
 		String[] words = command.split(" ");
 		String firstWord = words[0];
 		String secondWord = words[1];
