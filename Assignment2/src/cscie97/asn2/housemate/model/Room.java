@@ -38,7 +38,4 @@ public class Room {
 	public void addAppliance(Appliance appliance) {
 		applianceMap.put(appliance.getName(), appliance);
 	}
-	public void print(){
-		System.out.println("Room name: " + name + " floor: " + floor + " type: " + type + " window: " + windowCount);
-	}
 }

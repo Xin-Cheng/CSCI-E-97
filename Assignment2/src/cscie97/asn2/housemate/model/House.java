@@ -27,6 +27,10 @@ public class House {
 		return name;
 	}
 	
+	public String getAddress(){
+		return address;
+	}
+	
 	public Room getRoom(String roomName){
 		return roomMap.get(roomName);
 	}
@@ -44,8 +48,5 @@ public class House {
 	
 	public boolean containsRoom(String roomName){
 		return roomMap.containsKey(roomName);
-	}
-	public void print(){
-		System.out.println("name: " + name + " + address: " + address );
 	}
 }

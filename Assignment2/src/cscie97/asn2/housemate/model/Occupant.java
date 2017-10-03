@@ -12,7 +12,4 @@ public class Occupant {
 	public String getName(){
 		return name;
 	}
-	public void print(){
-		System.out.println("Occupant name: " + name + " type: " + type);
-	}
 }

@@ -33,12 +33,4 @@ public class Sensor {
 	public void setStatus(String statusName, String value) throws SettingException{
 		status.put(statusName, value);
 	}
-	public void print(){
-		System.out.println("name: " + name); 
-	    Iterator it = status.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry pair = (Map.Entry)it.next();
-	        System.out.println(pair.getKey() + " = " + pair.getValue());
-	    }
-	}
 }

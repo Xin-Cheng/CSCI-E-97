@@ -18,7 +18,6 @@ public class HouseMateModelService {
 	
 	public void defineHouse(String name, String address) {
 		House house = new House(name, address);
-		house.print();
 		houseMap.put(house.getName(), house);
 	}
 	
@@ -26,7 +25,6 @@ public class HouseMateModelService {
 		if(!houseMap.containsKey(houseName))
 			throw new ObjectNotFoundException("House Not Fount!");
 		Room room = new Room(name, floor, type, windowsCount);
-		room.print();
 		houseMap.get(houseName).addRoom(room);
 	}
 	
@@ -35,7 +33,6 @@ public class HouseMateModelService {
 			System.out.println("You have already defined an occupant: " + name + "!");
 		else {
 			Occupant occupant = new Occupant(name, type);
-			occupant.print();
 			occupantMap.put(name, occupant);
 		}
 	}
@@ -50,15 +47,12 @@ public class HouseMateModelService {
 			switch (type) {
 			case "smoke_detector":
 				sensor = new SmokeDetector(name);
-				sensor.print();
 				break;
 			case "camera":
 				sensor = new Camera(name);
-				sensor.print();
 				break;
 			default:
 				sensor = new Ava(name);
-				sensor.print();
 				break;
 			}
 			houseMap.get(houseName).getRoom(roomName).addSensor(sensor);
@@ -75,35 +69,27 @@ public class HouseMateModelService {
 			switch (type) {
 			case "thermostat":
 				appliance = new Thermostat(name);
-				appliance.print();
 				break;
 			case "window":
 				appliance = new Window(name);
-				appliance.print();
 				break;
 			case "door":
 				appliance = new Door(name);
-				appliance.print();
 				break;
 			case "light":
 				appliance = new Light(name);
-				appliance.print();
 				break;
 			case "TV":
 				appliance = new TV(name);
-				appliance.print();
 				break;
 			case "Pandora":
 				appliance = new Pandora(name);
-				appliance.print();
 				break;
 			case "Oven":
 				appliance = new Oven(name);
-				appliance.print();
 				break;
 			default:
 				appliance = new Refrigerator(name);
-				appliance.print();
 				break;
 			}
 			houseMap.get(houseName).getRoom(roomName).addAppliance(appliance);
@@ -162,8 +148,6 @@ public class HouseMateModelService {
 				}
 				appliance.setStatus(statusName, value);
 			}
-				
-			houseMap.get(houseName).getRoom(roomName).getAppliance(name).print();
 		} catch (SettingException ex) {
 			System.out.println(ex.getMessage());
 		}
