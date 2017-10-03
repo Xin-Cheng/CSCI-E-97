@@ -2,6 +2,8 @@ package cscie97.asn2.housemate.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import cscie97.asn1.knowledge.engine.KnowledgeGraph;
+import cscie97.asn1.knowledge.engine.Node;
 
 public class HouseMateModelService {
 	private static HouseMateModelService instance;
@@ -117,35 +119,56 @@ public class HouseMateModelService {
 	}
 	
 	public void setSensorStatus(String houseName, String roomName, String name, String statusName, String value) throws ObjectNotFoundException{
+		KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
+		
 		try {
 			if(!houseMap.containsKey(houseName))
 				throw new ObjectNotFoundException("House Not Fount!");
 			else if(!houseMap.get(houseName).containsRoom(roomName))
 				throw new ObjectNotFoundException("Room Not Fount!");
-			else			
-				houseMap.get(houseName).getRoom(roomName).getSensor(name).setStatus(statusName, value);
+			else {
+				Sensor sensor = houseMap.get(houseName).getRoom(roomName).getSensor(name);
+				Map<String, String> status = sensor.getStatus();
+				if(status.containsKey(statusName)) {
+					String oldValue = status.get(statusName);
+					Node node = knowledgeGraph.getNode(oldValue);
+					node.setIdentifier(value);
+				} else {
+					knowledgeGraph.importTriple(houseName + ":" + roomName + ":"+name, "has_" + statusName, value);
+				}
+				sensor.setStatus(statusName, value);
+			}			
 		} catch (SettingException ex) {
 			System.out.println(ex.getMessage());
 		}
 	}
 	
 	public void setApplianceStatus(String houseName, String roomName, String name, String statusName, String value) throws ObjectNotFoundException{
+		KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
 		try {
 			if(!houseMap.containsKey(houseName))
 				throw new ObjectNotFoundException("House Not Fount!");
 			else if(!houseMap.get(houseName).containsRoom(roomName))
 				throw new ObjectNotFoundException("Room Not Fount!");
-			else			
-				houseMap.get(houseName).getRoom(roomName).getAppliance(name).setStatus(statusName, value);
+			else {
+				Appliance appliance = houseMap.get(houseName).getRoom(roomName).getAppliance(name);
+				Map<String, String> status = appliance.getStatus();
+				if(status.containsKey(statusName)) {
+					String oldValue = status.get(statusName);
+					Node node = knowledgeGraph.getNode(oldValue);
+					node.setIdentifier(value);
+				} else {
+					knowledgeGraph.importTriple(houseName+":"+roomName+":"+name, "has_" + statusName, value);
+				}
+				appliance.setStatus(statusName, value);
+			}
+				
 			houseMap.get(houseName).getRoom(roomName).getAppliance(name).print();
 		} catch (SettingException ex) {
 			System.out.println(ex.getMessage());
 		}
 	}
 	
-	public void show(String[] command) {
-//		System.out.println("show");
-	}
 	
 	public House getHouse(String houseName) {
 		return houseMap.get(houseName); 

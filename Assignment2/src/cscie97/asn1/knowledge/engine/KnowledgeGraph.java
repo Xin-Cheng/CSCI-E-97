@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Arrays;
 
-class KnowledgeGraph {
+public class KnowledgeGraph {
 	private static KnowledgeGraph instance;
 	private Map<String, Node> nodeMap;
 	private Map<String, Predicate> predicateMap;

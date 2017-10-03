@@ -5,6 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import javax.management.Query;
+
+import cscie97.asn1.knowledge.engine.KnowledgeGraph;
+import cscie97.asn1.knowledge.engine.QueryEngine;
+
 public class CommandLineInterface {
 	
 	public CommandLineInterface() {
@@ -29,6 +34,7 @@ public class CommandLineInterface {
 	
 	public void executeCommand(String command){
 		HouseMateModelService houseMateModelService = HouseMateModelService.getInstance();
+		KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
 		
 		String[] words = command.split(" ");
 		String firstWord = words[0];
@@ -41,21 +47,28 @@ public class CommandLineInterface {
 					for (int i = 4; i < words.length; i++ )
 						address = address + " " + words[i];
 					houseMateModelService.defineHouse(words[2], address);
+					knowledgeGraph.importTriple(words[2], "has_address", address);
 					break;
 				case "room":
 					try {
 						houseMateModelService.defineRoom(words[2], Integer.parseInt(words[4]), words[6], Integer.parseInt(words[10]), words[8]);
+						knowledgeGraph.importTriple(words[8] + ":" + words[2], "on_floor", words[4]);
+						knowledgeGraph.importTriple(words[8] + ":" + words[2], "is_of_type", words[6]);
+						knowledgeGraph.importTriple(words[8] + ":" + words[2], "has_window_count", words[10]);
 					} catch (ObjectNotFoundException onfe) {
 						System.out.println(onfe.getMessage());
 					}
 					break;
 				case "occupant":
 					houseMateModelService.defineOccupant(words[2], words[4]);
+					knowledgeGraph.importTriple(words[2], "is_of_type", words[4]);
 					break;
 				case "sensor":
 					try {
 						String[] names = words[6].split(":");
 						houseMateModelService.defineSensor(words[2], words[4], names[0], names[1]);
+						knowledgeGraph.importTriple(names[0] + ":" + names[1] + ":" + words[2], "is_of_type", words[4]);
+						knowledgeGraph.importTriple(names[0] + ":" + names[1] + ":" + words[2], "is_at", names[0]+":"+names[1]);
 					} catch (ObjectNotFoundException ex) {
 						System.out.println(ex.getMessage());
 					}
@@ -64,6 +77,8 @@ public class CommandLineInterface {
 					try {
 						String[] names = words[6].split(":");
 						houseMateModelService.defineAppliance(words[2], words[4], names[0], names[1]);
+						knowledgeGraph.importTriple(names[0] + ":" + names[1] + ":" + words[2], "is_of_type", words[4]);
+						knowledgeGraph.importTriple(names[0] + ":" + names[1] + ":" + words[2], "is_at", names[0]+"_"+names[1]);
 					} catch (ObjectNotFoundException ex) {
 						System.out.println(ex.getMessage());
 					}
@@ -75,6 +90,7 @@ public class CommandLineInterface {
 		case "add":
 			try {
 				houseMateModelService.addOccupant(words[2], words[4]);
+				knowledgeGraph.importTriple(words[2], "at_house", words[4]);
 			} catch (ObjectNotFoundException ex) {
 				System.out.println(ex.getMessage());
 			}
@@ -98,9 +114,25 @@ public class CommandLineInterface {
 					break;
 			}
 			break;
-//		case "show":
-//			show(words);
-//			break;
+		case "show":
+			QueryEngine queryEngine = new QueryEngine();
+			switch (words.length) {
+			case 5:
+				queryEngine.executeQuery(words[2] + " " + "has_" + words[4] + " ?.");
+				break;
+			case 4:
+				queryEngine.executeQuery(words[3] + " ?" + " ?.");
+				break;
+			case 3:
+				queryEngine.executeQuery(words[2] + " ?" + " ?.");
+				break;
+			case 2:
+				queryEngine.executeQuery("? ? ?.");
+				break;
+			default:
+				break;
+			}
+			break;
 		default:
 			break;
 		}
