@@ -8,6 +8,7 @@ package cscie97.asn2.housemate.model;
 public class Occupant {
 	private String name;
 	private String type;
+	private String status;
 	
 	/**
      * Public constructor
@@ -26,5 +27,17 @@ public class Occupant {
      */
 	public String getName(){
 		return name;
+	}
+
+	public String getType(){
+		return type;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String value) {
+		status = value;
 	}
 }

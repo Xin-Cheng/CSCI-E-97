@@ -40,6 +40,18 @@ public class Room {
 	public String getName(){
 		return name;
 	}
+
+	public int getFloor() {
+		return floor;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public int getWindowCount() {
+		return windowCount;
+	}
 	
 	/**
      * This method returns a refrence to a sensor in a room with a specific identifier
