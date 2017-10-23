@@ -1,10 +1,12 @@
 package cscie97.asn2.housemate.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import cscie97.asn1.knowledge.engine.KnowledgeGraph;
 import cscie97.asn1.knowledge.engine.Node;
-
+import cscie97.asn3.housemate.controller.HouseMateControllerService;
+import cscie97.asn3.housemate.controller.IHouseMateControllerService;
 
 /**
  * The HouseMateModelService manages all the houses and everything in each house.
@@ -18,7 +20,30 @@ public class HouseMateModelService {
 	private static HouseMateModelService instance;
 	private Map<String, House> houseMap = new HashMap<>();
 	private Map<String, Occupant> occupantMap = new HashMap<>();
+
+	// Changes to House Mate Model Service------------------------------------
+	private HouseMateControllerService houseMateControllerService = null;
+	/**
+     * Public function to register itself to HMCS
+	  * @param controllerService House mate controller service
+     */
+	public void registerHMCS(IHouseMateControllerService controllerService){
+		houseMateControllerService = HouseMateControllerService.getInstance();
+	}
+	/**
+     * Public function to remove itself from HMCS
+	  * @param controllerService House mate controller service
+     */
+	public void removeHMCS(IHouseMateControllerService controllerService){
+		if(houseMateControllerService != null) {
+			houseMateControllerService = null;
+		}
+	}
 	
+	public void notifyHMCS(String statusChange) {
+		houseMateControllerService.update(statusChange);
+	}
+	// End of change--------------------------------------------------------------
 	/**
      * This method returns a reference to the single static instance of the HouseMateModelService.
      *

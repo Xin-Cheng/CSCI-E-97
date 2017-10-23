@@ -4,6 +4,8 @@ import cscie97.asn3.housemate.controller.CommandLineInterpreter;
 import cscie97.asn3.housemate.controller.ImportException;
 import cscie97.asn2.housemate.model.CommandLineInterface;
 import cscie97.asn2.housemate.model.CommandException;
+import cscie97.asn2.housemate.model.HouseMateModelService;
+import cscie97.asn3.housemate.controller.HouseMateControllerService;
 
 /**
  * Test Driver class to invoke the House Mate Model Service.
@@ -27,13 +29,15 @@ public class TestDriver {
 		} catch (CommandException ce) {
 			System.out.println(ce.getMessage());
 		}
-
-//		String triggerFile = "trigger.txt";
-//    	CommandLineInterpreter commandLineInterpreter = new CommandLineInterpreter();
-//    	try {
-//    		commandLineInterpreter.importFile(triggerFile);
-//		} catch (ImportException e) {
-//			System.out.println(e);
-//		}
+		System.out.println();
+				
+		// Set sensor status to invoke rules in HMCS
+		String triggerFile = "trigger.txt";
+    	CommandLineInterpreter commandLineInterpreter = new CommandLineInterpreter();
+    	try {
+    		commandLineInterpreter.importFile(triggerFile);
+		} catch (ImportException e) {
+			System.out.println(e);
+		}
     }
 }

@@ -2,6 +2,8 @@ package cscie97.asn3.housemate.controller;
 
 import cscie97.asn2.housemate.model.CommandException;
 import cscie97.asn2.housemate.model.CommandLineInterface;
+import cscie97.asn2.housemate.model.HouseMateModelService;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -40,6 +42,7 @@ public class CommandLineInterpreter implements ICommandLineInterpreter{
      * @param fileName name of the input file
      */	
 	public void importFile(String fileName) throws ImportException {
+		
         int lineNumber = 0;
         String line = null;
               
@@ -52,7 +55,7 @@ public class CommandLineInterpreter implements ICommandLineInterpreter{
                 
                 // Trim leading and trailing whitespace
                 line = line.trim();
-                if(line.charAt(0) != '#') {
+                if(!line.isEmpty() && line.charAt(0) != '#') {
                 	interpret(line);
                 }
             }
@@ -75,6 +78,9 @@ public class CommandLineInterpreter implements ICommandLineInterpreter{
     }
 	
 	public void interpret(String command){
-//		HouseMateControllerService.getInstance().executeCommand(command);
+		if(command.equals("register")) {
+			HouseMateModelService.getInstance().registerHMCS(HouseMateControllerService.getInstance());
+		}
+		HouseMateModelService.getInstance().notifyHMCS(command);
 	}
 }

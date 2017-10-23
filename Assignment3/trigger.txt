@@ -1,4 +1,7 @@
 ################################# set sensor status to invoke rules in HMCS #########################
+# register HMMS to HMMS
+register
+
 # ask ava to open the door in living_room1
 set appliance house1:living_room1:ava2 status command value "open door"
 

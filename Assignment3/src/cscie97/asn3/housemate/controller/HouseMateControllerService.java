@@ -28,25 +28,29 @@ public class HouseMateControllerService implements IHouseMateControllerService{
         return HouseMateControllerServiceSingletonHolder.INSTANCE;
     }
     
-	public void updateAppliance(Sensor sensor, Command command) {
+    public void update(String command) {
+    	System.out.println(command);
+    }
+    
+	private void updateAppliance(Sensor sensor, Command command) {
 		
 	}
-	public void updateOccupantLocation(Occupant occupant, String location) {
+	private void updateOccupantLocation(Occupant occupant, String location) {
 		
 	}
-	public void updateOccupantStatus(Occupant occupant, String status) {
+	private void updateOccupantStatus(Occupant occupant, String status) {
 		
 	}
-	public void getOccupantLocation(String occupantName) {
+	private void getOccupantLocation(String occupantName) {
 		
 	}
-	public void call911() {
+	private void call911() {
 		System.out.println("Calling 911...");		
 	}
-	public void sendEmail() {
+	private void sendEmail() {
 		System.out.println("Sending email requsting more beers...");
 	}
-	public void executeCommand(String commandLine){
+	private void executeCommand(String commandLine){
 		System.out.println(commandLine);
 	}
 }
