@@ -44,6 +44,7 @@ public class HouseMateModelService {
 		houseMateControllerService.update(statusChange);
 	}
 	// End of change--------------------------------------------------------------
+	
 	/**
      * This method returns a reference to the single static instance of the HouseMateModelService.
      *

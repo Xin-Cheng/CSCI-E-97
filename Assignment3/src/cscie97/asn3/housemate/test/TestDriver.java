@@ -4,8 +4,6 @@ import cscie97.asn3.housemate.controller.CommandLineInterpreter;
 import cscie97.asn3.housemate.controller.ImportException;
 import cscie97.asn2.housemate.model.CommandLineInterface;
 import cscie97.asn2.housemate.model.CommandException;
-import cscie97.asn2.housemate.model.HouseMateModelService;
-import cscie97.asn3.housemate.controller.HouseMateControllerService;
 
 /**
  * Test Driver class to invoke the House Mate Model Service.

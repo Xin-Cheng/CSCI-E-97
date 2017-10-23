@@ -80,7 +80,9 @@ public class CommandLineInterpreter implements ICommandLineInterpreter{
 	public void interpret(String command){
 		if(command.equals("register")) {
 			HouseMateModelService.getInstance().registerHMCS(HouseMateControllerService.getInstance());
+			System.out.println("Registering HouseMateModelService to HouseMateControllerService...");
+		} else {
+			HouseMateModelService.getInstance().notifyHMCS(command);
 		}
-		HouseMateModelService.getInstance().notifyHMCS(command);
 	}
 }
