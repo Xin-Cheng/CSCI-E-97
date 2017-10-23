@@ -17,5 +17,5 @@ set appliance house1:kitchen1:ava1 status command value "lights off"
 # ask ava the status of oven in kitchen1
 set appliance house1:kitchen1:ava1 status command value "oven1 temperature"
 
-# ask ava the location of joe_smith
+# ask ava the location of joe_smith, return null is location is not set to occupant
 set appliance house1:kitchen1:ava1 status command value "where is joe_smith"

@@ -1,6 +1,8 @@
 package cscie97.asn3.housemate.controller;
 
 
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
+
 import cscie97.asn2.housemate.model.HouseMateModelService;
 import cscie97.asn2.housemate.model.ObjectNotFoundException;
 import cscie97.asn2.housemate.model.Occupant;
@@ -12,9 +14,13 @@ public class HouseMateControllerService implements IHouseMateControllerService{
 	private String name;
 	private String statusName;
 	private String statusValue;
+	private String lastWord;
 	
 	
 	private Command applianceStatusChangeCommand = ()-> {HouseMateModelService.getInstance().setApplianceStatus(houseName, roomName, name, statusName, statusValue);};
+	private Command call911Command = ()-> {System.out.println("Calling 911...");};
+	private Command sendEmailCommand = ()-> {System.out.println("Sending email requsting more beers...");};
+	private Command showOccupantLocationCommand = ()-> {HouseMateModelService.getInstance().showOccupantLocation(lastWord);};
 	
     /**
      * Private default constructor
@@ -71,34 +77,63 @@ public class HouseMateControllerService implements IHouseMateControllerService{
 		String[] appNames = name.split(":");
 
 		if (appNames[2].startsWith("ava")) {
+
+			String on = commandWords[commandWords.length - 1];
+			this.lastWord = on.substring(0, on.length()-1);
+			
 			String voice = "";
 			for(int i = 6; i < commandWords.length; i++) {voice = voice.concat(commandWords[i]);}
 			voice = voice.substring(1, voice.length() - 1);
-
-			switch (voice) {
-			case "opendoor":
-				setCommand(appNames[0], appNames[1], appNames[2], "doorStatus", "open");
-				System.out.println("Door in room " + name + " is opened!");
+			
+			String where = voice.startsWith("where")? "where" : "noWhere";
+			
+			switch (where) {
+			case "where":
+				// ava receive command that ask the location of an occupant
+				try {
+					showOccupantLocationCommand.execute();
+				} catch (ObjectNotFoundException e) {
+					System.out.println(e.getMessage());
+				}
 				break;
-			case "closedoor":
-				setCommand(appNames[0], appNames[1], appNames[2], "doorStatus", "close");
-				System.out.println("Door in room " + name + " is closed!");
-				break;
-			case "lightson":
-				setCommand(appNames[0], appNames[1], appNames[2], "lightStatus", "on");
-				System.out.println("Lights in room " + name + " is turned on!");
-				break;
-			case "lightsoff":
-				setCommand(appNames[0], appNames[1], appNames[2], "lightStatus", "off");
-				System.out.println("Lights in room " + name + " is turned off!");
+			case "noWhere":
+				switch (voice) {
+				case "opendoor":
+					setCommand(appNames[0], appNames[1], appNames[2], "doorStatus", "open");
+					System.out.println("Door in room " + name + " is opened!");
+					break;
+				case "closedoor":
+					setCommand(appNames[0], appNames[1], appNames[2], "doorStatus", "close");
+					System.out.println("Door in room " + name + " is closed!");
+					break;
+				case "lightson":
+					setCommand(appNames[0], appNames[1], appNames[2], "lightStatus", "on");
+					System.out.println("Lights in room " + name + " is turned on!");
+					break;
+				case "lightsoff":
+					setCommand(appNames[0], appNames[1], appNames[2], "lightStatus", "off");
+					System.out.println("Lights in room " + name + " is turned off!");
+					break;
+				default:
+					// general command
+					String applianceName = commandWords[commandWords.length - 2].substring(1);
+					String fullApplianceName = new StringBuilder().append(appNames[0]).append(":").append(appNames[1]).append(":").append(applianceName).toString();
+					Command showApplianceStatusCommand = ()-> {HouseMateModelService.getInstance().showAppianceStatus(fullApplianceName, lastWord);}; 
+					try {
+						showApplianceStatusCommand.execute();
+					} catch (ObjectNotFoundException e) {
+						System.out.println(e.getMessage());
+					}
+					return;
+				}
+				try {
+					applianceStatusChangeCommand.execute();
+				} catch (ObjectNotFoundException e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			default:
 				break;
-			}
-			try {
-				applianceStatusChangeCommand.execute();
-			} catch (ObjectNotFoundException e) {
-				System.out.println(e.getMessage());
 			}
 		}
 	}
@@ -110,14 +145,5 @@ public class HouseMateControllerService implements IHouseMateControllerService{
 	}
 	private void getOccupantLocation(String occupantName) {
 		
-	}
-	private void call911() {
-		System.out.println("Calling 911...");		
-	}
-	private void sendEmail() {
-		System.out.println("Sending email requsting more beers...");
-	}
-	private void executeCommand(String commandLine){
-		System.out.println(commandLine);
 	}
 }

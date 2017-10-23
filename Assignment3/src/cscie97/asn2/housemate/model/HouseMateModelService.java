@@ -3,8 +3,12 @@ package cscie97.asn2.housemate.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.sun.media.jfxmedia.control.VideoDataBuffer;
+
 import cscie97.asn1.knowledge.engine.KnowledgeGraph;
 import cscie97.asn1.knowledge.engine.Node;
+import cscie97.asn1.knowledge.engine.QueryEngine;
 import cscie97.asn3.housemate.controller.HouseMateControllerService;
 import cscie97.asn3.housemate.controller.IHouseMateControllerService;
 
@@ -186,9 +190,27 @@ public class HouseMateModelService {
 		if(!houseMap.containsKey(houseName))
 			throw new ObjectNotFoundException("House not found!");
 		else
-			houseMap.get(houseName).addOccupant(occupantMap.get(occupantName));
-		
+			houseMap.get(houseName).addOccupant(occupantMap.get(occupantName));	
 	}
+	
+	// New methods added to House Mate Model Service---------------------------------------------------
+	public void changeOccupantLocation(String occupantName, String houseName, String roomName) throws ObjectNotFoundException{
+		if(!houseMap.containsKey(houseName))
+			throw new ObjectNotFoundException("House not found!");
+		KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
+		knowledgeGraph.importTriple(occupantName, "has_location", houseName + ":" + roomName);
+	}
+	public void showOccupantLocation(String occupantName) {
+		QueryEngine queryEngine = new QueryEngine();
+		queryEngine.executeQuery(occupantName + " " + "has_location" + " ?.");
+	}
+	
+	public void showAppianceStatus(String applianceName, String statusName) {
+		QueryEngine queryEngine = new QueryEngine();
+		queryEngine.executeQuery(applianceName + " has_" + statusName + " ?.");
+	}
+	// End of new methods------------------------------------------------------------------------------
+	
 	
 	/**
      * Public method for setting the status of a sensor

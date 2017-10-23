@@ -12,12 +12,4 @@ public class SmokeDetector extends Sensor{
 	public SmokeDetector(String name) {
 		super(name);
 	}
-	
-	/**
-     * A setter
-	 * @throws SettingException the status of a smoke detector cannot be set
-     */
-	public void setStatus(String statusName, String value) throws SettingException{
-		throw new SettingException("Cannot set the status of Smoke Detector!");
-	}
 }
