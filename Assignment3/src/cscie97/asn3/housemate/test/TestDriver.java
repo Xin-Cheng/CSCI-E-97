@@ -2,6 +2,8 @@ package cscie97.asn3.housemate.test;
 
 import cscie97.asn3.housemate.controller.CommandLineInterpreter;
 import cscie97.asn3.housemate.controller.ImportException;
+import cscie97.asn2.housemate.model.CommandLineInterface;
+import cscie97.asn2.housemate.model.CommandException;
 
 /**
  * Test Driver class to invoke the House Mate Model Service.
@@ -13,15 +15,25 @@ public class TestDriver {
     /**
      * Static main for TestDriver
      *
-     * @param args 2 arguments, input triple file name, and input query file name.
+     * @param args 2 arguments, set up file name, and trigger command file name.
      */
     public static void main(String[] args) {
-    	String fileName = "housesetup2.txt";
-    	CommandLineInterpreter commandLineInterpreter = new CommandLineInterpreter();
-    	try {
-    		commandLineInterpreter.importFile(fileName);
-		} catch (ImportException e) {
-			System.out.println(e);
+    	String setupFile = "housesetup.txt";
+    	
+    	// Set up house configuration and initial states of appliance
+    	CommandLineInterface commandLineInterface = new CommandLineInterface();
+		try {
+			commandLineInterface.importFile(setupFile);
+		} catch (CommandException ce) {
+			System.out.println(ce.getMessage());
 		}
+
+//		String triggerFile = "trigger.txt";
+//    	CommandLineInterpreter commandLineInterpreter = new CommandLineInterpreter();
+//    	try {
+//    		commandLineInterpreter.importFile(triggerFile);
+//		} catch (ImportException e) {
+//			System.out.println(e);
+//		}
     }
 }

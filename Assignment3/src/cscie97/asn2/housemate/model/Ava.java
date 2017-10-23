@@ -4,7 +4,7 @@ package cscie97.asn2.housemate.model;
  * The Ava is a special kind of sensor.
  * @author Xin
  */
-public class Ava extends Sensor{
+public class Ava extends Appliance{
 	/**
      * Public default constructor
      */
