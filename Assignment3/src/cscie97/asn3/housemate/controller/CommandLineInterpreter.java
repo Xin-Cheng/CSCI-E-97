@@ -77,7 +77,12 @@ public class CommandLineInterpreter implements ICommandLineInterpreter{
         }
     }
 	
-	public void interpret(String command){
+    /**
+     * Private method that send event to House Mate Model Service.
+     *
+     * @param command name of the event
+     */	
+	private void interpret(String command){
 		if(command.equals("register")) {
 			HouseMateModelService.getInstance().registerHMCS(HouseMateControllerService.getInstance());
 			System.out.println("Registering HouseMateModelService to HouseMateControllerService...");
