@@ -1,13 +1,7 @@
 package cscie97.asn3.housemate.controller;
 
-
-import org.omg.CORBA.Current;
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
-
-import cscie97.asn2.housemate.model.House;
 import cscie97.asn2.housemate.model.HouseMateModelService;
 import cscie97.asn2.housemate.model.ObjectNotFoundException;
-import cscie97.asn2.housemate.model.Occupant;
 
 public class HouseMateControllerService implements IHouseMateControllerService{
 	
@@ -143,6 +137,18 @@ public class HouseMateControllerService implements IHouseMateControllerService{
 				try {
 					System.out.println("Current beer count is " + commandWords[commandWords.length - 1]);
 					sendEmailCommand.execute();
+				} catch (ObjectNotFoundException e) {
+					System.out.println(e.getMessage());
+				}
+			}
+		} else if(appNames[2].startsWith("oven")){
+			// oven
+			int timeToCook = Integer.parseInt(commandWords[commandWords.length - 1]); 
+			Command foodReadyCommand = ()-> { System.out.println("Ava: Food is ready!");}; 
+			
+			if(timeToCook == 0) {
+				try {
+					foodReadyCommand.execute();
 				} catch (ObjectNotFoundException e) {
 					System.out.println(e.getMessage());
 				}

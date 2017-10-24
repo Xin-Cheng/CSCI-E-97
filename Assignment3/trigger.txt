@@ -37,3 +37,6 @@ set fire house1:kitchen1
 
 # update the beerCount of Refrigerator
 set appliance house1:kitchen1:refrigerator1 status beerCount value 3
+
+# set time to cook of oven to zero
+set appliance house1:kitchen1:oven1 status timeToCook value 0
