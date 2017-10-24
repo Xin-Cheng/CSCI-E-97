@@ -3,6 +3,7 @@ package cscie97.asn3.housemate.controller;
 
 import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
+import cscie97.asn2.housemate.model.House;
 import cscie97.asn2.housemate.model.HouseMateModelService;
 import cscie97.asn2.housemate.model.ObjectNotFoundException;
 import cscie97.asn2.housemate.model.Occupant;
@@ -58,6 +59,15 @@ public class HouseMateControllerService implements IHouseMateControllerService{
 	            ie.setCommand(command);
 	            System.out.println(ie);
 	        }
+		} else if(words[1].equals("sensor")) {
+			try {
+				updateSensor(words);
+			} catch (InvalidCommandException e) {
+	        	e.printStackTrace();
+	        	InvalidCommandException ie = new InvalidCommandException();
+	            ie.setCommand(command);
+	            System.out.println(ie);
+	        }
 		}
     }
     
@@ -85,36 +95,27 @@ public class HouseMateControllerService implements IHouseMateControllerService{
 			for(int i = 6; i < commandWords.length; i++) {voice = voice.concat(commandWords[i]);}
 			voice = voice.substring(1, voice.length() - 1);
 			
-			String where = voice.startsWith("where")? "where" : "noWhere";
-			
-			switch (where) {
-			case "where":
+			if(voice.startsWith("where")) {
 				// ava receive command that ask the location of an occupant
 				try {
 					showOccupantLocationCommand.execute();
 				} catch (ObjectNotFoundException e) {
 					System.out.println(e.getMessage());
 				}
-				break;
-			case "noWhere":
-				switch (voice) {
-				case "opendoor":
-					setCommand(appNames[0], appNames[1], appNames[2], "doorStatus", "open");
-					System.out.println("Door in room " + name + " is opened!");
-					break;
-				case "closedoor":
-					setCommand(appNames[0], appNames[1], appNames[2], "doorStatus", "close");
+			} else {
+				if(voice.startsWith("opendoor")) {
+					setCommand(appNames[0], appNames[1], lastWord, "doorStatus", "open");
+					System.out.println("Door in room " + appNames[0] + ":" + appNames[1] + " is opened!");
+				} else if(voice.startsWith("closedoor")) {
+					setCommand(appNames[0], appNames[1], lastWord, "doorStatus", "close");
 					System.out.println("Door in room " + name + " is closed!");
-					break;
-				case "lightson":
-					setCommand(appNames[0], appNames[1], appNames[2], "lightStatus", "on");
+				} else if(voice.startsWith("turn_onlight")) {
+					setCommand(appNames[0], appNames[1], lastWord, "lightStatus", "on");
 					System.out.println("Lights in room " + name + " is turned on!");
-					break;
-				case "lightsoff":
-					setCommand(appNames[0], appNames[1], appNames[2], "lightStatus", "off");
+				} else if(voice.startsWith("turn_offlight")) {
+					setCommand(appNames[0], appNames[1], lastWord, "lightStatus", "off");
 					System.out.println("Lights in room " + name + " is turned off!");
-					break;
-				default:
+				} else {
 					// general command
 					String applianceName = commandWords[commandWords.length - 2].substring(1);
 					String fullApplianceName = new StringBuilder().append(appNames[0]).append(":").append(appNames[1]).append(":").append(applianceName).toString();
@@ -131,19 +132,76 @@ public class HouseMateControllerService implements IHouseMateControllerService{
 				} catch (ObjectNotFoundException e) {
 					System.out.println(e.getMessage());
 				}
-				break;
-			default:
-				break;
 			}
 		}
 	}
-	private void updateOccupantLocation(Occupant occupant, String location) {
+	
+	private void updateSensor(String[] commandWords) throws InvalidCommandException{
+		if (commandWords.length != 7)
+			throw new InvalidCommandException();
 		
-	}
-	private void updateOccupantStatus(Occupant occupant, String status) {
+		String occupantName = commandWords[commandWords.length - 1];
+		String cameraStatus = commandWords[4];
 		
-	}
-	private void getOccupantLocation(String occupantName) {
+		String name = commandWords[2];
+		String[] appNames = name.split(":");
 		
+		Command occupantDetectedCommand = ()-> {
+			applianceStatusChangeCommand.execute();
+			System.out.println("Lights in room " + name + " is turned on!");
+			System.out.println("Temperature in room " + name + " is increased!");
+			System.out.println("Knowledge graph is updated!");
+			HouseMateModelService.getInstance().changeOccupantLocation(occupantName, appNames[0], appNames[1]);
+		}; 
+		Command occupantLeavingCommand = ()-> {
+			applianceStatusChangeCommand.execute();
+			System.out.println("Lights in room " + name + " is turned off!");
+			System.out.println("Temperature in room " + name + " is descreased!");
+			System.out.println("Knowledge graph is updated!");
+			HouseMateModelService.getInstance().changeOccupantLocation(occupantName, appNames[0], null);
+		}; 
+		
+		switch (cameraStatus) {
+		case "occupant_detected":
+			setCommand(appNames[0], appNames[1], "light1", "lightStatus", "on");
+			try {
+				occupantDetectedCommand.execute();
+			} catch (ObjectNotFoundException e) {
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
+			break;
+		case "occupant_leaving":
+			setCommand(appNames[0], appNames[1], "light1", "lightStatus", "off");
+			try {
+				occupantLeavingCommand.execute();
+			} catch (ObjectNotFoundException e) {
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
+			break;
+		case "occupant_active":
+			Command occupantActiveCommand = ()-> { HouseMateModelService.getInstance().updateOccupantStatus(occupantName, "active");};
+			try {
+				occupantActiveCommand.execute();
+				System.out.println(occupantName+" has_status "+"active");
+				System.out.println("Knowledge graph is updated!");
+			} catch (ObjectNotFoundException e) {
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
+			break;
+		case "occupant_inactive":
+			Command occupantInactiveCommand = ()-> { HouseMateModelService.getInstance().updateOccupantStatus(occupantName, "inactive");};
+			try {
+				occupantInactiveCommand.execute();
+				System.out.println(occupantName+" has_status "+"inactive");
+				System.out.println("Knowledge graph is updated!");
+			} catch (ObjectNotFoundException e) {
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
+			break;
+		}
 	}
 }

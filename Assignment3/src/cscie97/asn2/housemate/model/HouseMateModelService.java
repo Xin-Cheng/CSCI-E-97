@@ -198,7 +198,10 @@ public class HouseMateModelService {
 		if(!houseMap.containsKey(houseName))
 			throw new ObjectNotFoundException("House not found!");
 		KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
-		knowledgeGraph.importTriple(occupantName, "has_location", houseName + ":" + roomName);
+		if(roomName == null)
+			knowledgeGraph.importTriple(occupantName, "has_location", houseName);
+		else
+			knowledgeGraph.importTriple(occupantName, "has_location", houseName + ":" + roomName);
 	}
 	public void showOccupantLocation(String occupantName) {
 		QueryEngine queryEngine = new QueryEngine();
@@ -208,6 +211,13 @@ public class HouseMateModelService {
 	public void showAppianceStatus(String applianceName, String statusName) {
 		QueryEngine queryEngine = new QueryEngine();
 		queryEngine.executeQuery(applianceName + " has_" + statusName + " ?.");
+	}
+	
+	public void updateOccupantStatus(String occupantName, String status){
+		occupantMap.get(occupantName).setStatus(status);
+	}
+	public void getOccupantStauts(String occupantName) {
+		occupantMap.get(occupantName).getStatus();
 	}
 	// End of new methods------------------------------------------------------------------------------
 	
