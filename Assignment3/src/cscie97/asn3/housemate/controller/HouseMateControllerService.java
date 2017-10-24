@@ -1,6 +1,7 @@
 package cscie97.asn3.housemate.controller;
 
 
+import org.omg.CORBA.Current;
 import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 import cscie97.asn2.housemate.model.House;
@@ -68,6 +69,8 @@ public class HouseMateControllerService implements IHouseMateControllerService{
 	            ie.setCommand(command);
 	            System.out.println(ie);
 	        }
+		} else if(words[1].equals("fire")) {
+			manageFire(words);
 		}
     }
     
@@ -129,6 +132,17 @@ public class HouseMateControllerService implements IHouseMateControllerService{
 				}
 				try {
 					applianceStatusChangeCommand.execute();
+				} catch (ObjectNotFoundException e) {
+					System.out.println(e.getMessage());
+				}
+			}
+		} else if(appNames[2].startsWith("refrigerator")){
+			// refrigerator
+			int beerCount = Integer.parseInt(commandWords[commandWords.length - 1]); 
+			if(beerCount < 4) {
+				try {
+					System.out.println("Current beer count is " + commandWords[commandWords.length - 1]);
+					sendEmailCommand.execute();
 				} catch (ObjectNotFoundException e) {
 					System.out.println(e.getMessage());
 				}
@@ -202,6 +216,24 @@ public class HouseMateControllerService implements IHouseMateControllerService{
 				e.printStackTrace();
 			}
 			break;
+		}
+	}
+	
+	public void manageFire(String[] commandWords){
+		String name = commandWords[2];
+		String[] appNames = name.split(":");
+		setCommand(appNames[0], appNames[1], "light1", "lightStatus", "on");
+		try {
+			applianceStatusChangeCommand.execute();
+			System.out.println("All lights turned on!");
+		} catch (ObjectNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+		System.out.println("Ava: Fire in the house, please leave the house immediately");
+		try {
+			call911Command.execute();
+		} catch (ObjectNotFoundException e) {
+			System.out.println(e.getMessage());
 		}
 	}
 }

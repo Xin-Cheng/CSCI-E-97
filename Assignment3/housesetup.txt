@@ -30,13 +30,19 @@ define appliance oven1 type oven room house1:kitchen1
 # create a refrigerator appliance instance
 define appliance refrigerator1 type refrigerator room house1:kitchen1
 
-# create camera appliance instances
-define appliance camera1 type camera room house1:kitchen1
-define appliance camera2 type camera room house1:living_room1
-define appliance camera3 type camera room house1:bedroom1
-define appliance camera4 type camera room house1:dining_room1
-define appliance camera5 type camera room house1:family_room1
-define appliance camera6 type camera room house1:bathroom1
+# create a door appliance instance
+define appliance door1 type door room house1:kitchen1
+
+# create a light appliance instance
+define appliance light1 type light room house1:kitchen1
+
+# create camera sensor instances
+define sensor camera1 type camera room house1:kitchen1
+define sensor camera2 type camera room house1:living_room1
+define sensor camera3 type camera room house1:bedroom1
+define sensor camera4 type camera room house1:dining_room1
+define sensor camera5 type camera room house1:family_room1
+define sensor camera6 type camera room house1:bathroom1
 
 # create ava appliance instances
 define appliance ava1 type ava room house1:kitchen1
