@@ -18,7 +18,7 @@ public class TestDriver {
      * @param args 2 arguments, set up file name, and trigger command file name.
      */
     public static void main(String[] args) {
-    	String setupFile = "housesetup.txt";
+    	String setupFile = args[0];
     	
     	// Set up house configuration and initial states of appliance
     	CommandLineInterface commandLineInterface = new CommandLineInterface();
@@ -30,7 +30,7 @@ public class TestDriver {
 		System.out.println();
 				
 		// Set sensor status to invoke rules in HMCS
-		String triggerFile = "trigger.txt";
+		String triggerFile = args[1];
     	CommandLineInterpreter commandLineInterpreter = new CommandLineInterpreter();
     	try {
     		commandLineInterpreter.importFile(triggerFile);
