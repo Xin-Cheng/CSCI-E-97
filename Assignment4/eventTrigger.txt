@@ -1,0 +1,42 @@
+################################# set sensor status to invoke rules in HMCS #########################
+# register HMMS to HMMS
+register
+
+# ask ava to open the door in kitchen1
+set appliance house1:kitchen1:ava1 status command value "open door1"
+
+# ask ava to close the door in kitchen1
+set appliance house1:kitchen1:ava1 status command value "close door1"
+
+# ask ava to turn on the lights in kitchen1
+set appliance house1:kitchen1:ava1 status command value "turn_on light1"
+
+# ask ava to turn on the lights in kitchen1
+set appliance house1:kitchen1:ava1 status command value "turn_off light1"
+
+# ask ava the status of oven in kitchen1
+set appliance house1:kitchen1:ava1 status command value "oven1 temperature"
+
+# camera detects occupant in room
+set sensor house1:kitchen1:camera1 status occupant_detected value joe_smith
+
+# ask ava again the location of joe_smith
+set appliance house1:kitchen1:ava1 status command value "where is joe_smith"
+
+# camera detects occupant inactive
+set sensor house1:kitchen1:camera1 status occupant_inactive value joe_smith
+
+# camera detects occupant active
+set sensor house1:kitchen1:camera1 status occupant_active value joe_smith
+
+# camera detects occupant leaving room
+set sensor house1:kitchen1:camera1 status occupant_leaving value joe_smith
+
+# set fire to the house
+set fire house1:kitchen1
+
+# update the beerCount of Refrigerator
+set appliance house1:kitchen1:refrigerator1 status beerCount value 3
+
+# set time to cook of oven to zero
+set appliance house1:kitchen1:oven1 status timeToCook value 0

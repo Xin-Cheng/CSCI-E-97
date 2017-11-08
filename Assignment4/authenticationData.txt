@@ -1,0 +1,79 @@
+########### Data for authentication test ##########################
+# create_admin to create other users
+# create_user <user_id> <user_name>
+create_user debra Debra
+
+# add_admin_credential
+# add_user_credential <user_id> <password> <value>
+add_user_credential debra password secret
+
+# define roles
+# define_role <role_id> <role_name> <role_description>
+define_role admin_role “Admin Role” “Has all permissions of an administrator”
+
+# add role to user
+# add_role_to_user <user_id> <role_id>
+add_role_to_user debra admin_role
+
+# define permissions
+# define_permission <permission_id> <permission_name> <permission_description>
+define_permission user_admin “User Administrator” “Create Update Delete Users”
+
+# create resource role
+# create_resource_role <resource_role_name> <role_id> <resource>
+create_resource_role house1_admin_role admin_role house1
+
+# login
+# login <resource> <user_id> <password>
+login house1 debra secret
+
+# create_user
+# create_user <user_id> <user_name>
+create_user sam Sam
+create_user jimmy Jimmy
+
+# add_user_credential
+# add_user_credential <user_id> <voice_print> <value>
+add_user_credential sam voice_print --sam--
+add_user_credential jimmy voice_print --jimmy--
+
+# define roles
+# define_role <role_id> <role_name> <role_description>
+define_role adult_resident “Adult Resident Role” “Has all permissions of an adult resident”
+define_role child_resident “Child Resident Role” “Has all permissions of a child resident”
+
+# define permissions
+# define_permission <permission_id> <permission_name> <permission_description>
+define_permission control_oven “Control Oven” “Full Control of Oven”
+define_permission control_thermostat “Control Thermostat” “Full Control of Thermostat”
+define_permission control_door “Control Door” “Full Control of Door”
+define_permission control_window “Control Window” “Full Control of Window”
+
+# add entitlement (permission role ) to role
+# add_entitlement_to_role <role_id> <entitlement_id>
+add_entitlement_to_role admin_role user_admin
+add_entitlement_to_role admin_role control_oven
+add_entitlement_to_role admin_role control_thermostat
+add_entitlement_to_role admin_role control_door
+add_entitlement_to_role admin_role control_window
+add_entitlement_to_role adult_resident control_oven
+add_entitlement_to_role adult_resident control_thermostat
+add_entitlement_to_role adult_resident control_door
+add_entitlement_to_role adult_resident control_window
+add_entitlement_to_role child_resident control_door
+add_entitlement_to_role child_resident control_window
+
+# add role to user
+# add_role_to_user <user_id> <role_id>
+add_role_to_user sam adult_resident
+add_role_to_user jimmy child_resident
+
+# create resource role
+# create_resource_role <resource_role_name> <role_id> <resource>
+create_resource_role house1_child_resident child_resident house1
+create_resource_role house1_adult_resident adult_resident house1
+
+# add resource role to user
+# add_resource_role_to_user <user_id> <resource_role>
+add_resource_role_to_user sam house1_adult_resident
+add_resource_role_to_user jimmy house1_child_resident

@@ -1,0 +1,57 @@
+########### Define a test house, room, sensors, occupants appliances, etc ##########################
+# define a new house instance with identifier house1 and street address
+define house house1 address 374 Beacon Street, Boston, MA
+
+# define a new room instance and attach to a house
+define room kitchen1 floor 1 type kitchen house house1 windows 2
+define room living_room1 floor 1 type living_room house house1 windows 3
+define room bedroom1 floor 2 type bedroom house house1 windows 2
+define room dining_room1 floor 1 type dining_room house house1 windows 2
+define room family_room1 floor 1 type family_room house house1 windows 1
+define room bathroom1 floor 1 type bathroom house house1 windows 1
+
+# define a new occupant
+define occupant joe_smith type adult
+
+# add occupant to house
+add occupant joe_smith to_house house1
+
+# create a new sensor in a room
+define sensor smoke_detector1 type smoke_detector room house1:kitchen1
+define sensor smoke_detector2 type smoke_detector room house1:living_room1
+define sensor smoke_detector3 type smoke_detector room house1:bedroom1
+define sensor smoke_detector4 type smoke_detector room house1:dining_room1
+define sensor smoke_detector5 type smoke_detector room house1:family_room1
+define sensor smoke_detector6 type smoke_detector room house1:bathroom1
+
+# create an oven appliance instance
+define appliance oven1 type oven room house1:kitchen1
+
+# create a refrigerator appliance instance
+define appliance refrigerator1 type refrigerator room house1:kitchen1
+
+# create a door appliance instance
+define appliance door1 type door room house1:kitchen1
+
+# create a light appliance instance
+define appliance light1 type light room house1:kitchen1
+
+# create camera sensor instances
+define sensor camera1 type camera room house1:kitchen1
+define sensor camera2 type camera room house1:living_room1
+define sensor camera3 type camera room house1:bedroom1
+define sensor camera4 type camera room house1:dining_room1
+define sensor camera5 type camera room house1:family_room1
+define sensor camera6 type camera room house1:bathroom1
+
+# create ava appliance instances
+define appliance ava1 type ava room house1:kitchen1
+define appliance ava2 type ava room house1:living_room1
+define appliance ava3 type ava room house1:bedroom1
+define appliance ava4 type ava room house1:dining_room1
+define appliance ava5 type ava room house1:family_room1
+define appliance ava6 type ava room house1:bathroom1
+
+# turn the oven on and set the temperature to 350 degrees
+set appliance house1:kitchen1:oven1 status power value ON
+set appliance house1:kitchen1:oven1 status temperature value 350
