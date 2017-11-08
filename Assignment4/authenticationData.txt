@@ -19,6 +19,10 @@ add_role_to_user debra admin_role
 # define_permission <permission_id> <permission_name> <permission_description>
 define_permission user_admin “User Administrator” “Create Update Delete Users”
 
+# create resource
+# create_resource <resource_id> <resource_name>
+create_resource house1 house1
+
 # create resource role
 # create_resource_role <resource_role_name> <role_id> <resource>
 create_resource_role house1_admin_role admin_role house1
