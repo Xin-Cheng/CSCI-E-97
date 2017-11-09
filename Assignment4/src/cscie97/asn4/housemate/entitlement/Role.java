@@ -1,16 +1,18 @@
 package cscie97.asn4.housemate.entitlement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Role extends Entitlement implements Visitor{
 	private List<Entitlement> permissions;
-	private int index = -1;
+	private int index;
 	
 	/**
      * Public default constructor
      */
 	public Role() {
-		super();
+		permissions = new ArrayList<>();
+		index = -1;
 	}
 	
 	/**

@@ -50,7 +50,7 @@ public class CommandLineInterpreter {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             while ((line = bufferedReader.readLine()) != null) {
                 lineNumber++;
-//                System.out.println(line);
+                lineInterpreter(line);
             }
             bufferedReader.close();  
         } catch (IOException e) {
@@ -61,5 +61,36 @@ public class CommandLineInterpreter {
             ie.setErrorContent(e.getMessage());
             throw ie;
         }
+	}
+	
+	public void lineInterpreter(String line){
+		// Get an instance of the entitlement service
+		EntitlementService entitlementService = EntitlementService.getInstance();
+		// Ignore empty line and command description
+		if(line.isEmpty() || line.substring(0, 1).equals("#"))
+			return;
+		
+		// split command by space
+		String[] words = line.split(" ");
+		String firstWord = words[0];
+		switch (firstWord) {
+		case "define_role":
+			entitlementService.defineRole(words);
+			break;
+		case "define_permission":
+			entitlementService.definePermission(words);
+			break;
+		case "add_entitlement_to_role":
+			entitlementService.addPermissionToRole(words);
+			break;
+		case "create_resource":
+			entitlementService.createResource(words);
+			break;
+		case "create_resource_role":
+			entitlementService.createResource(words);
+			break;
+		default:
+			break;
+		}
 	}
 }

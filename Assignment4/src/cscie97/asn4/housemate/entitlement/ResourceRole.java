@@ -3,6 +3,8 @@ package cscie97.asn4.housemate.entitlement;
 public class ResourceRole {
 	private String id;
 	private String name;
+	private Resource resource;
+	private Role role;
 	
 	public ResourceRole() {
 		
@@ -20,5 +22,19 @@ public class ResourceRole {
 	}
 	public String getName(){
 		return name;
+	}
+	
+	public void setResource(Resource resource){
+		this.resource = resource;
+	} 
+	public Resource getResource(){
+		return resource;
+	}
+	
+	public void setRole(Role role){
+		this.role = role;
+	}
+	public Role getRole(){
+		return role;
 	}
 }
