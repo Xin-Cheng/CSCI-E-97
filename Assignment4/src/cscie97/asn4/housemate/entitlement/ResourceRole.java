@@ -37,4 +37,10 @@ public class ResourceRole {
 	public Role getRole(){
 		return role;
 	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "ResourceRole {Resource: " + resource.getID() + ", " + 
+				"Role: " + role.getID() + "}";
+	}
 }

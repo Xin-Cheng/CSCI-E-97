@@ -8,7 +8,6 @@ package cscie97.asn4.housemate.entitlement;
  */
 public class AccessToken {
 	private String id;
-	private String expirationDate;
 	private String state;
 	
 	/**
@@ -24,16 +23,6 @@ public class AccessToken {
 	}
 	public String getID() {
 		return id;
-	}
-	
-	/**
-     * Public getter and setter of private attribute: expirationDate
-     */
-	public void setExpirationDate(String date){
-		this.expirationDate = date;
-	}
-	public String getExpirationDate(){
-		return expirationDate;
 	}
 	
 	/**

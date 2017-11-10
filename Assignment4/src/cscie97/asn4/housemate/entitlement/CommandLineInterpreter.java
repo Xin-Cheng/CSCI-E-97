@@ -88,10 +88,16 @@ public class CommandLineInterpreter {
 			entitlementService.createResource(words);
 			break;
 		case "create_resource_role":
-			entitlementService.createResource(words);
+			entitlementService.createResourceRole(words);
 			break;
 		case "create_user":
 			entitlementService.createUser(words);
+			break;
+		case "add_user_credential":
+			entitlementService.addUserCredential(words);
+			break;
+		case "add_resource_role_to_user":
+			entitlementService.addResourceRole(words);
 			break;
 		default:
 			break;

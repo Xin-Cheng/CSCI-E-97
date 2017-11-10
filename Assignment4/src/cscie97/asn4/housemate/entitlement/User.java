@@ -1,5 +1,7 @@
 package cscie97.asn4.housemate.entitlement;
 
+import java.util.UUID;
+
 public class User {
 
 	protected String id;
@@ -19,19 +21,23 @@ public class User {
 	}
 	
 	public void create(String id, String name) {
-		this.setID(id);
-		this.setName(name);
-		this.role = userFactory.createRole();
+		setID(id);
+		setName(name);
+		role = userFactory.createRole();
+		createAccessToken();
+	}
+	
+	public void createAccessToken(){
+		AccessToken accessToken = new AccessToken();
+		accessToken.setID(UUID.randomUUID().toString() + id);
+		accessToken.setState("active");
+		this.accessToken = accessToken;
 	}
 	
 	public void setCredential(Credential credential) {
 		this.credential = credential;
 	}
-	
-	public void accessToken(AccessToken accessToken) {
-		this.accessToken = accessToken;
-	}
-	
+		
 	public void setResourceRole(ResourceRole resourceRole) {
 		this.resourceRole = resourceRole;
 	}
@@ -68,7 +74,7 @@ public class User {
 			rr = resourceRole.getName();
 		String tokenState = "N/A";
 		if(accessToken != null)
-			rr = accessToken.getState();
+			tokenState = accessToken.getState();
 		return "User{" +
         "ID = '" + id + '\'' +
         ", name =" + name +

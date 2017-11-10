@@ -37,22 +37,27 @@ create_resource_role house1_admin_role house1_admin_role admin_role house1
 create_resource_role house1_child_resident house1_child_resident child_resident house1
 create_resource_role house1_adult_resident house1_adult_resident adult_resident house1
 
-# create_admin user with password credential
-# create_user <role_id> <user_id> <user_name> <password> <value>
-create_user admin_role debra Debra password secret
+# create_admin user
+# create_user <role_id> <user_id> <user_name>
+create_user admin_role debra Debra
+
+# add user credential
+# add_user_credential <user_id>, <voice_print|password>, <value>
+add_user_credential debra password secret
 
 # add resource role to user
 # add_resource_role_to_user <user_id> <resource_role>
 add_resource_role_to_user debra house1_admin_role
 
-# login
-# login <resource> <user_id> <password>
-login house1 debra secret
+# create_user with
+# create_user <role_id> <user_id> <user_name>
+create_user adult_resident sam Sam
+create_user child_resident jimmy Jimmy
 
-# create_user with voice_print credential
-# create_user <role_id> <user_id> <user_name> <voice_print> <value>
-create_user adult_resident sam Sam voice_print --sam--
-create_user child_resident jimmy Jimmy voice_print --jimmy--
+# add user credential
+# add_user_credential <user_id>, <voice_print|password>, <value>
+add_user_credential sam voice_print --sam--
+add_user_credential jimmy voice_print --jimmy--
 
 # add resource role to user
 # add_resource_role_to_user <user_id> <resource_role>
