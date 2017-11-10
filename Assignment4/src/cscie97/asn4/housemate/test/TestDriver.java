@@ -17,6 +17,5 @@ public class TestDriver {
     	} catch (AuthenticationSetupException e) {
 			System.out.println(e);
 		}
-    	System.out.println("abc".hashCode());
     }
 }

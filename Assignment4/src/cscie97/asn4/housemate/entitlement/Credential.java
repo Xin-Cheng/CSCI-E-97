@@ -1,7 +1,8 @@
 package cscie97.asn4.housemate.entitlement;
 
 public class Credential {
-	private String id;
+	private String name;
+	protected String value;
 	
 	/**
      * Public default constructor
@@ -11,12 +12,16 @@ public class Credential {
 	}
 	
 	/**
-     * Public getter and setter of private attribute: id
+     * Public getter and setter of private attribute: name
      */
-	public void setID(String id) {
-		this.id = id;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getID(){
-		return id;
+	public String getName() {
+		return name;
+	}
+	
+	public void setValue(String value){
+		this.value = value;
 	}
 }

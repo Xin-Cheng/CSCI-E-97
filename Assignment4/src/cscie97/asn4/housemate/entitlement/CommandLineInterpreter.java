@@ -50,6 +50,7 @@ public class CommandLineInterpreter {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             while ((line = bufferedReader.readLine()) != null) {
                 lineNumber++;
+                System.out.println(line);
                 lineInterpreter(line);
             }
             bufferedReader.close();  
@@ -88,6 +89,9 @@ public class CommandLineInterpreter {
 			break;
 		case "create_resource_role":
 			entitlementService.createResource(words);
+			break;
+		case "create_user":
+			entitlementService.createUser(words);
 			break;
 		default:
 			break;

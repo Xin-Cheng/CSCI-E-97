@@ -1,17 +1,17 @@
 ########### Data for authentication test ##########################
 # define roles
 # define_role <role_id> <role_name> <role_description>
-define_role admin_role “Admin Role” “Has all permissions of an administrator”
-define_role adult_resident “Adult Resident Role” “Has all permissions of an adult resident”
-define_role child_resident “Child Resident Role” “Has all permissions of a child resident”
+define_role admin_role Admin_Role Has_all_permissions_of_an_administrator
+define_role adult_resident Adult_Resident_Role Has_all_permissions_of_an_adult_resident
+define_role child_resident Child_Resident_Role Has_all_permissions_of_a_child_resident
 
 # define permissions
 # define_permission <permission_id> <permission_name> <permission_description>
-define_permission user_admin “User Administrator” “Create Update Delete Users”
-define_permission control_oven “Control Oven” “Full Control of Oven”
-define_permission control_thermostat “Control Thermostat” “Full Control of Thermostat”
-define_permission control_door “Control Door” “Full Control of Door”
-define_permission control_window “Control Window” “Full Control of Window”
+define_permission user_admin User_Administrator Create_Update_Delete_Users
+define_permission control_oven Control_Oven Full_Control_of_Oven
+define_permission control_thermostat Control_Thermostat Full_Control_of_Thermostat
+define_permission control_door Control_Door Full_Control_of_Door
+define_permission control_window Control_Window Full_Control_of_Window
 
 # add entitlement (permission role ) to role
 # add_entitlement_to_role <role_id> <entitlement_id>
@@ -37,36 +37,22 @@ create_resource_role house1_admin_role house1_admin_role admin_role house1
 create_resource_role house1_child_resident house1_child_resident child_resident house1
 create_resource_role house1_adult_resident house1_adult_resident adult_resident house1
 
-# create_admin
-# create_user <user_id> <user_name>
-create_user debra Debra
+# create_admin user with password credential
+# create_user <role_id> <user_id> <user_name> <password> <value>
+create_user admin_role debra Debra password secret
 
-# add_admin_credential
-# add_user_credential <user_id> <password> <value>
-add_user_credential debra password secret
-
-# add role to admin
-# add_role_to_user <user_id> <role_id>
-add_role_to_user debra admin_role
+# add resource role to user
+# add_resource_role_to_user <user_id> <resource_role>
+add_resource_role_to_user debra house1_admin_role
 
 # login
 # login <resource> <user_id> <password>
 login house1 debra secret
 
-# create_user
-# create_user <user_id> <user_name>
-create_user sam Sam
-create_user jimmy Jimmy
-
-# add_user_credential
-# add_user_credential <user_id> <voice_print> <value>
-add_user_credential sam voice_print --sam--
-add_user_credential jimmy voice_print --jimmy--
-
-# add role to user
-# add_role_to_user <user_id> <role_id>
-add_role_to_user sam adult_resident
-add_role_to_user jimmy child_resident
+# create_user with voice_print credential
+# create_user <role_id> <user_id> <user_name> <voice_print> <value>
+create_user adult_resident sam Sam voice_print --sam--
+create_user child_resident jimmy Jimmy voice_print --jimmy--
 
 # add resource role to user
 # add_resource_role_to_user <user_id> <resource_role>
