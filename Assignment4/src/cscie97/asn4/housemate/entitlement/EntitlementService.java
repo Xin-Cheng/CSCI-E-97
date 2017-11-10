@@ -2,6 +2,8 @@ package cscie97.asn4.housemate.entitlement;
 
 import java.util.HashMap;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+
 public class EntitlementService {
 	private HashMap<String, Role> roleMap = new HashMap<String, Role>();
 	private HashMap<String, Permission> permissionMap = new HashMap<String, Permission>();
@@ -153,12 +155,25 @@ public class EntitlementService {
     		e.setUserId(userId);
     		throw e;
     	}
-    	System.out.println(">> " + user);
+    	System.out.println(">> " + "Welcom '" + userId + "'! You are logged in successfully!");
     }
     
     public void logout(String userId){
     	User user = userMap.get(userId);
     	user.getAccessToken().setState("inactive");
-    	System.out.println(">> " + user);
+    	System.out.println(">> " + "User: '" + userId + "' logged out successfully!");
+    }
+    
+    // Using visitor pattern to identify user, if not identified
+    public void identify(String credential) throws EntityNotFoundException{
+    	
+    }
+    
+    public AccessToken authenticate(){
+    	return null;
+    }
+    
+    public boolean checkAccess(AccessToken accessToken, Resource resource, Permission permission){
+    	return false;
     }
 }
