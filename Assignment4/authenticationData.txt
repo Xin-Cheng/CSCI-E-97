@@ -42,7 +42,7 @@ create_resource_role house1_adult_resident house1_adult_resident adult_resident 
 create_user admin_role debra Debra
 
 # add user credential
-# add_user_credential <user_id>, <voice_print|password>, <value>
+# add_user_credential <user_id> <voice_print|password> <value>
 add_user_credential debra password secret
 
 # add resource role to user
@@ -55,7 +55,7 @@ create_user adult_resident sam Sam
 create_user child_resident jimmy Jimmy
 
 # add user credential
-# add_user_credential <user_id>, <voice_print|password>, <value>
+# add_user_credential <user_id> <voice_print|password> <value>
 add_user_credential sam voice_print --sam--
 add_user_credential jimmy voice_print --jimmy--
 
@@ -63,3 +63,7 @@ add_user_credential jimmy voice_print --jimmy--
 # add_resource_role_to_user <user_id> <resource_role>
 add_resource_role_to_user sam house1_adult_resident
 add_resource_role_to_user jimmy house1_child_resident
+
+# login
+# login <user_id> <voice_print|password> <credential>
+login sam voice_print --sam--

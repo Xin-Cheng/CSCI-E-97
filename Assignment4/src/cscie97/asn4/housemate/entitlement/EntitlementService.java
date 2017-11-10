@@ -118,4 +118,38 @@ public class EntitlementService {
     	user.setResourceRole(resourceRole);
     	System.out.println(">> " + user);
     }
+    
+    public void login(String[] logInfo) throws EntityNotFoundException, InvalidCredentialException{
+    	String userId = logInfo[1];
+    	String credentialType = logInfo[2];
+    	String credentialValue = logInfo[3];
+    	
+    	// Your account or password is incorrect.
+    	User user;
+    	// Check if the user is a registered user
+    	if(userMap.containsKey(userId))
+    		user = userMap.get(userId);
+    	else {
+    		EntityNotFoundException e = new EntityNotFoundException();
+    		e.setEntityName(userId);
+    		throw e;
+    	}
+    	
+    	// Check if the credential matches the user
+    	Credential credential = user.getCredential();
+    	String targetValue = credential.getValue();
+    	if (credentialType.equals("password")) {
+			targetValue = String.valueOf(credential.hashCode());
+		}
+    	
+    	if(targetValue.equals(credentialValue)) {
+    		// Credential matches the user, give the user a new access token
+    		user.createAccessToken();
+    	} else {
+    		// Credential does not match the user
+    		InvalidCredentialException e = new InvalidCredentialException();
+    		e.setUserId(userId);
+    		throw e;
+    	}
+    }
 }

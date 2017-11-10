@@ -37,6 +37,10 @@ public class User {
 	public void setCredential(Credential credential) {
 		this.credential = credential;
 	}
+	
+	public Credential getCredential(){
+		return credential;
+	}
 		
 	public void setResourceRole(ResourceRole resourceRole) {
 		this.resourceRole = resourceRole;
