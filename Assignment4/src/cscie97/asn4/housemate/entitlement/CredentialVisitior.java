@@ -5,7 +5,10 @@ public class CredentialVisitior implements InventoryVisitor{
 	public void visit(User user){
 		this.credential = user.getCredential();
 	}
-	public String getCredentialValue(){
-		return credential.getValue();
+	public boolean checkCredential(String credential){
+		String inputCredential = credential;
+		if(!credential.startsWith("--"))
+			inputCredential = String.valueOf(credential.hashCode());
+		return this.credential.getValue().equals(inputCredential);
 	}
 }

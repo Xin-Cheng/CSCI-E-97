@@ -75,7 +75,6 @@ public class CommandLineInterpreter {
         // test identify
         try {
         	EntitlementService.getInstance().identify("--sam--");
-        	EntitlementService.getInstance().identify("--xxx--");
         } catch (EntityNotFoundException e) {
 			e.setFilename(authenticationData);
 			e.setLineNumber(lineNumber);

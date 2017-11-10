@@ -122,6 +122,7 @@ public class EntitlementService {
     	System.out.println(">> " + user);
     }
     
+    // Use visitor pattern to varify login information
     public void login(String[] logInfo) throws EntityNotFoundException, InvalidCredentialException{
     	String userId = logInfo[1];
     	String credentialValue = logInfo[3];
@@ -137,13 +138,21 @@ public class EntitlementService {
     		throw e;
     	}
     	
-    	// Check if the credential matches the user
-    	if(checkUserCredential(user, credentialValue)) {
+    	CredentialVisitior visitor = new CredentialVisitior();
+    	user.accept(visitor);
+    	
+		if(visitor.checkCredential(credentialValue)) {
     		// Credential matches the user
     		// If the access token is inactive, give the user a new access token, else do nothing
     		if(user.getAccessToken().getState().equals("inactive"))
     			user.createAccessToken();
-    	}
+		} else {
+    		// Credential does not match the user, InvalidCredentialException
+    		InvalidCredentialException e = new InvalidCredentialException();
+    		e.setUserId(user.getID());
+    		throw e;
+		}
+		
     	System.out.println(">> " + "Welcom '" + userId + "'! You are logged in successfully!");
     }
     
@@ -159,13 +168,10 @@ public class EntitlementService {
     	for(HashMap.Entry<String, User> entry: userMap.entrySet()) {
     		User user = entry.getValue();
     		user.accept(visitor);
-    		String credentialValue = visitor.getCredentialValue();
-    		String inputCredential = credential;
-    		if(!credential.startsWith("--"))
-    			inputCredential = String.valueOf(credential.hashCode());
     		
-    		if(inputCredential.equals(credentialValue)) {
-    			System.out.println("---------------------Verified!!");
+    		if(visitor.checkCredential(credential)) {
+    			System.out.println(">> Credential Verified!!");
+    			authenticate(user);
     			return;
     		}	
     	}
@@ -174,33 +180,12 @@ public class EntitlementService {
     	throw entityNotFoundException;
     }
     
-    public AccessToken authenticate(){
-    	return null;
+    public AccessToken authenticate(User user){
+    	System.out.println(">> AccessToken of user returned! " + user.getAccessToken().getID());
+    	return user.getAccessToken();
     }
     
     public boolean checkAccess(AccessToken accessToken, Resource resource, Permission permission){
     	return false;
-    }
-    
-    private boolean checkUserCredential(User user, String credentialValue) throws InvalidCredentialException{
-    	// Check if the credential matches the user
-    	Credential credential = user.getCredential();
-    	String targetValue = credential.getValue();
-    	
-    	if (!credentialValue.startsWith("--")) {
-    		// Password credential
-			targetValue = String.valueOf(credential.hashCode());
-		}
-    	
-    	if(targetValue.equals(credentialValue)) {
-    		// Credential matches the user
-    		// If the access token is inactive, give the user a new access token, else do nothing
-    		return true;
-    	} else {
-    		// Credential does not match the user, InvalidCredentialException
-    		InvalidCredentialException e = new InvalidCredentialException();
-    		e.setUserId(user.getID());
-    		throw e;
-    	}
     }
 }
