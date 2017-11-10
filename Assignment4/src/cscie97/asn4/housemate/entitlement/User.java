@@ -34,6 +34,10 @@ public class User {
 		this.accessToken = accessToken;
 	}
 	
+	public AccessToken getAccessToken(){
+		return accessToken;
+	}
+	
 	public void setCredential(Credential credential) {
 		this.credential = credential;
 	}

@@ -143,13 +143,22 @@ public class EntitlementService {
 		}
     	
     	if(targetValue.equals(credentialValue)) {
-    		// Credential matches the user, give the user a new access token
-    		user.createAccessToken();
+    		// Credential matches the user
+    		// If the access token is inactive, give the user a new access token, else do nothing
+    		if(user.getAccessToken().getState().equals("inactive"))
+    			user.createAccessToken();
     	} else {
-    		// Credential does not match the user
+    		// Credential does not match the user, InvalidCredentialException
     		InvalidCredentialException e = new InvalidCredentialException();
     		e.setUserId(userId);
     		throw e;
     	}
+    	System.out.println(">> " + user);
+    }
+    
+    public void logout(String userId){
+    	User user = userMap.get(userId);
+    	user.getAccessToken().setState("inactive");
+    	System.out.println(">> " + user);
     }
 }

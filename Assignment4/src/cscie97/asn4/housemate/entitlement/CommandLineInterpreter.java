@@ -51,7 +51,19 @@ public class CommandLineInterpreter {
             while ((line = bufferedReader.readLine()) != null) {
                 lineNumber++;
                 System.out.println(line);
-                lineInterpreter(line);
+                try {
+                	lineInterpreter(line);
+                } catch (EntityNotFoundException e) {
+                	e.printStackTrace();
+					e.setFilename(authenticationData);
+					e.setLineNumber(lineNumber);
+					System.out.println(e);
+				} catch (InvalidCredentialException e) {
+                	e.printStackTrace();
+					e.setFilename(authenticationData);
+					e.setLineNumber(lineNumber);
+					System.out.println(e);
+				}        
             }
             bufferedReader.close();  
         } catch (IOException e) {
@@ -64,7 +76,7 @@ public class CommandLineInterpreter {
         }
 	}
 	
-	public void lineInterpreter(String line){
+	public void lineInterpreter(String line) throws EntityNotFoundException, InvalidCredentialException{
 		// Get an instance of the entitlement service
 		EntitlementService entitlementService = EntitlementService.getInstance();
 		// Ignore empty line and command description
@@ -98,6 +110,16 @@ public class CommandLineInterpreter {
 			break;
 		case "add_resource_role_to_user":
 			entitlementService.addResourceRole(words);
+			break;
+		case "login":
+			try {
+				entitlementService.login(words);
+			} catch (EntityNotFoundException | InvalidCredentialException e) {
+				throw e;
+			}
+			break;
+		case "logout":
+			entitlementService.logout(words[1]);
 			break;
 		default:
 			break;
