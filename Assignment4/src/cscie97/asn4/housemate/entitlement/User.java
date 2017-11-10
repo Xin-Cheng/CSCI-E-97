@@ -2,7 +2,7 @@ package cscie97.asn4.housemate.entitlement;
 
 import java.util.UUID;
 
-public class User {
+public class User implements Element{
 
 	protected String id;
 	protected String name;
@@ -70,6 +70,10 @@ public class User {
 	
 	public ResourceRole getResourceRole(){
 		return resourceRole;
+	}
+	
+	public void accept(InventoryVisitor visitor){
+		visitor.visit(this);
 	}
 	
 	@Override

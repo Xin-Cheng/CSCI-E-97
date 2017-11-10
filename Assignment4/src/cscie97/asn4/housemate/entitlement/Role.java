@@ -3,16 +3,14 @@ package cscie97.asn4.housemate.entitlement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Role extends Entitlement implements Visitor{
+public class Role extends Entitlement{
 	private List<Entitlement> permissions;
-	private int index;
 	
 	/**
      * Public default constructor
      */
 	public Role() {
 		permissions = new ArrayList<>();
-		index = -1;
 	}
 	
 	/**
@@ -31,16 +29,5 @@ public class Role extends Entitlement implements Visitor{
      */
 	public void deleteEntitlement(Entitlement entitlement) {
 		permissions.remove(entitlement);
-	}
-	
-	@Override
-	public boolean hasNext(){
-		return index < permissions.size() - 1;
-	}
-	
-	@Override
-	public Entitlement getNext(){
-		index++;
-		return permissions.get(index);
 	}
 }

@@ -1,8 +1,9 @@
 package cscie97.asn4.housemate.entitlement;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
+import com.sun.javafx.collections.MappingChange.Map;
 
 public class EntitlementService {
 	private HashMap<String, Role> roleMap = new HashMap<String, Role>();
@@ -123,7 +124,6 @@ public class EntitlementService {
     
     public void login(String[] logInfo) throws EntityNotFoundException, InvalidCredentialException{
     	String userId = logInfo[1];
-    	String credentialType = logInfo[2];
     	String credentialValue = logInfo[3];
     	
     	// Your account or password is incorrect.
@@ -138,22 +138,11 @@ public class EntitlementService {
     	}
     	
     	// Check if the credential matches the user
-    	Credential credential = user.getCredential();
-    	String targetValue = credential.getValue();
-    	if (credentialType.equals("password")) {
-			targetValue = String.valueOf(credential.hashCode());
-		}
-    	
-    	if(targetValue.equals(credentialValue)) {
+    	if(checkUserCredential(user, credentialValue)) {
     		// Credential matches the user
     		// If the access token is inactive, give the user a new access token, else do nothing
     		if(user.getAccessToken().getState().equals("inactive"))
     			user.createAccessToken();
-    	} else {
-    		// Credential does not match the user, InvalidCredentialException
-    		InvalidCredentialException e = new InvalidCredentialException();
-    		e.setUserId(userId);
-    		throw e;
     	}
     	System.out.println(">> " + "Welcom '" + userId + "'! You are logged in successfully!");
     }
@@ -164,9 +153,25 @@ public class EntitlementService {
     	System.out.println(">> " + "User: '" + userId + "' logged out successfully!");
     }
     
-    // Using visitor pattern to identify user, if not identified
+    // Using visitor pattern to identify user
     public void identify(String credential) throws EntityNotFoundException{
-    	
+    	CredentialVisitior visitor = new CredentialVisitior();
+    	for(HashMap.Entry<String, User> entry: userMap.entrySet()) {
+    		User user = entry.getValue();
+    		user.accept(visitor);
+    		String credentialValue = visitor.getCredentialValue();
+    		String inputCredential = credential;
+    		if(!credential.startsWith("--"))
+    			inputCredential = String.valueOf(credential.hashCode());
+    		
+    		if(inputCredential.equals(credentialValue)) {
+    			System.out.println("---------------------Verified!!");
+    			return;
+    		}	
+    	}
+    	EntityNotFoundException entityNotFoundException = new EntityNotFoundException();
+    	entityNotFoundException.setEntityName(credential);
+    	throw entityNotFoundException;
     }
     
     public AccessToken authenticate(){
@@ -175,5 +180,27 @@ public class EntitlementService {
     
     public boolean checkAccess(AccessToken accessToken, Resource resource, Permission permission){
     	return false;
+    }
+    
+    private boolean checkUserCredential(User user, String credentialValue) throws InvalidCredentialException{
+    	// Check if the credential matches the user
+    	Credential credential = user.getCredential();
+    	String targetValue = credential.getValue();
+    	
+    	if (!credentialValue.startsWith("--")) {
+    		// Password credential
+			targetValue = String.valueOf(credential.hashCode());
+		}
+    	
+    	if(targetValue.equals(credentialValue)) {
+    		// Credential matches the user
+    		// If the access token is inactive, give the user a new access token, else do nothing
+    		return true;
+    	} else {
+    		// Credential does not match the user, InvalidCredentialException
+    		InvalidCredentialException e = new InvalidCredentialException();
+    		e.setUserId(user.getID());
+    		throw e;
+    	}
     }
 }

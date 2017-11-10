@@ -1,6 +1,6 @@
 package cscie97.asn4.housemate.entitlement;
 
-public class Entitlement implements Visitor{
+public class Entitlement{
 	private String id;
 	private String name;
 	private String description;
@@ -40,12 +40,5 @@ public class Entitlement implements Visitor{
 	}
 	public String getDescription() {
 		return description;
-	}
-	
-	public boolean hasNext(){
-		return false;
-	}
-	public Entitlement getNext(){
-		return null;
 	}
 }

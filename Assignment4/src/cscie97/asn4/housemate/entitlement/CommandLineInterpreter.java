@@ -54,15 +54,13 @@ public class CommandLineInterpreter {
                 try {
                 	lineInterpreter(line);
                 } catch (EntityNotFoundException e) {
-                	e.printStackTrace();
 					e.setFilename(authenticationData);
 					e.setLineNumber(lineNumber);
-					System.out.println(e);
-				} catch (InvalidCredentialException e) {
-                	e.printStackTrace();
+					e.printStackTrace();
+				} catch (InvalidCredentialException e) {	
 					e.setFilename(authenticationData);
 					e.setLineNumber(lineNumber);
-					System.out.println(e);
+					e.printStackTrace();
 				}        
             }
             bufferedReader.close();  
@@ -74,6 +72,15 @@ public class CommandLineInterpreter {
             ie.setErrorContent(e.getMessage());
             throw ie;
         }
+        // test identify
+        try {
+        	EntitlementService.getInstance().identify("--sam--");
+        	EntitlementService.getInstance().identify("--xxx--");
+        } catch (EntityNotFoundException e) {
+			e.setFilename(authenticationData);
+			e.setLineNumber(lineNumber);
+			e.printStackTrace();
+		}
 	}
 	
 	public void lineInterpreter(String line) throws EntityNotFoundException, InvalidCredentialException{

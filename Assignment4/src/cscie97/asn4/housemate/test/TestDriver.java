@@ -2,6 +2,7 @@ package cscie97.asn4.housemate.test;
 
 import cscie97.asn4.housemate.entitlement.AuthenticationSetupException;
 import cscie97.asn4.housemate.entitlement.CommandLineInterpreter;
+import cscie97.asn4.housemate.entitlement.EntitlementService;
 
 public class TestDriver {
     /**

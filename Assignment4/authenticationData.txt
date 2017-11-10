@@ -68,6 +68,18 @@ add_resource_role_to_user jimmy house1_child_resident
 # logout <user_id>
 logout sam
 
-# login
+# login with correct credential
+# login <user_id> <voice_print|password> <credential>
+login sam voice_print --sam--
+
+# logout
+# logout <user_id>
+logout sam
+
+# login in with wrong credetial, test InvalidCredentialException
+# login <user_id> <voice_print|password> <credential>
+login sam voice_print --xxx--
+
+# login with correct credential
 # login <user_id> <voice_print|password> <credential>
 login sam voice_print --sam--
