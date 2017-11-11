@@ -9,6 +9,7 @@ import javax.management.Query;
 
 import cscie97.asn1.knowledge.engine.KnowledgeGraph;
 import cscie97.asn1.knowledge.engine.QueryEngine;
+import cscie97.asn4.housemate.entitlement.AccessToken;
 
 /**
  * The CommandLineInterface class is responsible for reading command from input setup file. It parse each
@@ -131,7 +132,7 @@ public class CommandLineInterface {
 					break;
 				case "appliance":
 					try {
-						houseMateModelService.setApplianceStatus(names[0], names[1], names[2], words[4], words[6]);
+						houseMateModelService.setApplianceStatus(names[0], names[1], names[2], words[4], words[6], new AccessToken());
 					} catch (ObjectNotFoundException ex) {
 						System.out.println(ex.getMessage());
 					}

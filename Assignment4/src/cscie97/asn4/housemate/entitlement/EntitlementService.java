@@ -200,7 +200,6 @@ public class EntitlementService {
     					List<Entitlement> entitlements = role.getEntitlements();
     					for (Entitlement entitlement : entitlements) {
 							if(entitlement.getID().equals(permissionID)) {
-								System.out.println(">> User:" + user.getID() + " has access!!");
 								return true;	// User has permission
 							}
 						}

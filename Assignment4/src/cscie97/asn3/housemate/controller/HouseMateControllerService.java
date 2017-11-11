@@ -2,6 +2,9 @@ package cscie97.asn3.housemate.controller;
 
 import cscie97.asn2.housemate.model.HouseMateModelService;
 import cscie97.asn2.housemate.model.ObjectNotFoundException;
+import cscie97.asn4.housemate.entitlement.AccessToken;
+import cscie97.asn4.housemate.entitlement.EntitlementService;
+import cscie97.asn4.housemate.entitlement.EntityNotFoundException;
 
 /**
  * The HouseMateControllerService listens to all events happen in House.
@@ -20,11 +23,12 @@ public class HouseMateControllerService implements IHouseMateControllerService{
 	private String statusName;
 	private String statusValue;
 	private String lastWord;
+	private AccessToken accessToken;
 	
     /**
      * Lambda expression that interact with House Mate Model Service to change application status. 
      */
-	private Command applianceStatusChangeCommand = ()-> {HouseMateModelService.getInstance().setApplianceStatus(houseName, roomName, name, statusName, statusValue);};
+	private Command applianceStatusChangeCommand = ()-> {HouseMateModelService.getInstance().setApplianceStatus(houseName, roomName, name, statusName, statusValue, accessToken);};
     /**
      * Lambda expression that perform call 911 action when fire is detected in house.
      */
@@ -128,6 +132,10 @@ public class HouseMateControllerService implements IHouseMateControllerService{
 
 			String on = commandWords[commandWords.length - 2];
 			this.lastWord = on.substring(0, on.length()-1);
+
+			// Change to HMMS: check accssToken---------------------------------------------------
+			String voicePrint = commandWords[commandWords.length - 1];
+			// End of change---------------------------------------------------
 			
 			String voice = "";
 			for(int i = 6; i < commandWords.length-1; i++) {voice = voice.concat(commandWords[i]);}
@@ -141,30 +149,38 @@ public class HouseMateControllerService implements IHouseMateControllerService{
 					System.out.println(e.getMessage());
 				}
 			} else {
+				// Change to HMMS: check accssToken---------------------------------------------------
+				try {
+					accessToken = EntitlementService.getInstance().identify(voicePrint);	
+				} catch (EntityNotFoundException e) {
+					e.printStackTrace();
+				}
+				// End of change---------------------------------------------------
+				
 				if(voice.startsWith("opendoor")) {
 					// ava receive command to open the door
 					setCommand(appNames[0], appNames[1], lastWord, "doorStatus", "open");
-					System.out.println("Door in room " + appNames[0] + ":" + appNames[1] + " is opened!");
+//					System.out.println("Door in room " + appNames[0] + ":" + appNames[1] + " is opened!");
 				} else if(voice.startsWith("closedoor")) {
 					// ava receive command to close the door
 					setCommand(appNames[0], appNames[1], lastWord, "doorStatus", "close");
-					System.out.println("Door in room " + name + " is closed!");
+//					System.out.println("Door in room " + name + " is closed!");
 				} else if(voice.startsWith("turn_onlight")) {
 					// ava receive command to turn on the light
 					setCommand(appNames[0], appNames[1], lastWord, "lightStatus", "on");
-					System.out.println("Lights in room " + name + " is turned on!");
+//					System.out.println("Lights in room " + name + " is turned on!");
 				} else if(voice.startsWith("turn_offlight")) {
 					// ava receive command to turn off the light
 					setCommand(appNames[0], appNames[1], lastWord, "lightStatus", "off");
-					System.out.println("Lights in room " + name + " is turned off!");
+//					System.out.println("Lights in room " + name + " is turned off!");
 				} else if (voice.startsWith("turn_onoven")) {
 					// ava receive command to turn on the oven
 					setCommand(appNames[0], appNames[1], lastWord, "ovenStatus", "on");
-					System.out.println("Oven in room " + name + " is turned on!");
+//					System.out.println("Oven in room " + name + " is turned on!");
 				} else if (voice.startsWith("turn_offoven")) {
 					// ava receive command to turn off the oven
 					setCommand(appNames[0], appNames[1], lastWord, "ovenStatus", "off");
-					System.out.println("Oven in room " + name + " is turned off!");
+//					System.out.println("Oven in room " + name + " is turned off!");
 				} else {
 					// general command
 					String applianceName = commandWords[commandWords.length - 2].substring(1);

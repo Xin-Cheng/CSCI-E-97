@@ -12,6 +12,7 @@ define_permission control_oven Control_Oven Full_Control_of_Oven
 define_permission control_thermostat Control_Thermostat Full_Control_of_Thermostat
 define_permission control_door Control_Door Full_Control_of_Door
 define_permission control_window Control_Window Full_Control_of_Window
+define_permission control_light Control_Light Full_Control_of_Light
 
 # add entitlement (permission role ) to role
 # add_entitlement_to_role <role_id> <entitlement_id>
@@ -20,12 +21,15 @@ add_entitlement_to_role admin_role control_oven
 add_entitlement_to_role admin_role control_thermostat
 add_entitlement_to_role admin_role control_door
 add_entitlement_to_role admin_role control_window
+add_entitlement_to_role admin_role control_light
 add_entitlement_to_role adult_resident control_oven
+add_entitlement_to_role adult_resident control_light
 add_entitlement_to_role adult_resident control_thermostat
 add_entitlement_to_role adult_resident control_door
 add_entitlement_to_role adult_resident control_window
 add_entitlement_to_role child_resident control_door
 add_entitlement_to_role child_resident control_window
+add_entitlement_to_role child_resident control_light
 
 # create resource
 # create_resource <resource_id> <resource_name>

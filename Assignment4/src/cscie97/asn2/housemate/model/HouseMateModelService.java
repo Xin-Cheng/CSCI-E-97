@@ -1,16 +1,17 @@
 package cscie97.asn2.housemate.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.sun.media.jfxmedia.control.VideoDataBuffer;
 
 import cscie97.asn1.knowledge.engine.KnowledgeGraph;
 import cscie97.asn1.knowledge.engine.Node;
 import cscie97.asn1.knowledge.engine.QueryEngine;
 import cscie97.asn3.housemate.controller.HouseMateControllerService;
 import cscie97.asn3.housemate.controller.IHouseMateControllerService;
+import cscie97.asn4.housemate.entitlement.AccessToken;
+import cscie97.asn4.housemate.entitlement.EntitlementService;
+import cscie97.asn4.housemate.entitlement.EntityNotFoundException;
+import cscie97.asn4.housemate.entitlement.InvalidAccessTokenException;
 
 /**
  * The HouseMateModelService manages all the houses and everything in each house.
@@ -267,7 +268,7 @@ public class HouseMateModelService {
 	 * @param value status value
 	 * @throws ObjectNotFoundException when room/house is not found
      */
-	public void setApplianceStatus(String houseName, String roomName, String name, String statusName, String value) throws ObjectNotFoundException{
+	public void setApplianceStatus(String houseName, String roomName, String name, String statusName, String value, AccessToken accessToken) throws ObjectNotFoundException{
 		KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
 		try {
 			if(!houseMap.containsKey(houseName))
@@ -275,6 +276,14 @@ public class HouseMateModelService {
 			else if(!houseMap.get(houseName).containsRoom(roomName))
 				throw new ObjectNotFoundException("Room Not Fount!");
 			else {
+				// Change to HMMS: check accssToken---------------------------------------------------
+				try {
+					EntitlementService.getInstance().checkAccess(accessToken, houseName, "control_"+name.substring(0, name.length()-1));
+				} catch (EntityNotFoundException | InvalidAccessTokenException e) {
+					System.out.println(e);
+				}
+				// End of change---------------------------------------------------
+				
 				Appliance appliance = houseMap.get(houseName).getRoom(roomName).getAppliance(name);
 				Map<String, String> status = appliance.getStatus();
 				if(status.containsKey(statusName)) {
@@ -283,6 +292,7 @@ public class HouseMateModelService {
 					node.setIdentifier(value);
 				} else {
 					knowledgeGraph.importTriple(houseName+":"+roomName+":"+name, "has_" + statusName, value);
+					System.out.println(houseName+":"+roomName+":"+name +  "has_" + statusName + value);
 				}
 				appliance.setStatus(statusName, value);
 			}

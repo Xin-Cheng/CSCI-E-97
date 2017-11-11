@@ -1,3 +1,4 @@
+
 ################################# set sensor status to invoke rules in HMCS #########################
 # register HMMS to HMMS
 register
@@ -19,9 +20,6 @@ set appliance house1:kitchen1:ava1 status command value "turn_on oven1" --sam--
 
 # ask ava to turn off the oven in kitchen1, adult_resident
 set appliance house1:kitchen1:ava1 status command value "turn_off oven1" --jimmy--
-
-# ask ava the status of oven in kitchen1
-set appliance house1:kitchen1:ava1 status command value "oven1 temperature" --sam--
 
 # camera detects occupant in room
 set sensor house1:kitchen1:camera1 status occupant_detected value joe_smith
