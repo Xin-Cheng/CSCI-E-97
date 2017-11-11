@@ -2,26 +2,32 @@
 # register HMMS to HMMS
 register
 
-# ask ava to open the door in kitchen1
-set appliance house1:kitchen1:ava1 status command value "open door1"
+# ask ava to open the door in kitchen1, adult_resident
+set appliance house1:kitchen1:ava1 status command value "open door1" --sam--
 
-# ask ava to close the door in kitchen1
-set appliance house1:kitchen1:ava1 status command value "close door1"
-
-# ask ava to turn on the lights in kitchen1
-set appliance house1:kitchen1:ava1 status command value "turn_on light1"
+# ask ava to close the door in kitchen1, child_resident
+set appliance house1:kitchen1:ava1 status command value "close door1" --jimmy--
 
 # ask ava to turn on the lights in kitchen1
-set appliance house1:kitchen1:ava1 status command value "turn_off light1"
+set appliance house1:kitchen1:ava1 status command value "turn_on light1" --xxx--
+
+# ask ava to turn on the lights in kitchen1
+set appliance house1:kitchen1:ava1 status command value "turn_off light1" --sam--
+
+# ask ava to turn on the oven in kitchen1, adult_resident
+set appliance house1:kitchen1:ava1 status command value "turn_on oven1" --sam--
+
+# ask ava to turn off the oven in kitchen1, adult_resident
+set appliance house1:kitchen1:ava1 status command value "turn_off oven1" --jimmy--
 
 # ask ava the status of oven in kitchen1
-set appliance house1:kitchen1:ava1 status command value "oven1 temperature"
+set appliance house1:kitchen1:ava1 status command value "oven1 temperature" --sam--
 
 # camera detects occupant in room
 set sensor house1:kitchen1:camera1 status occupant_detected value joe_smith
 
 # ask ava again the location of joe_smith
-set appliance house1:kitchen1:ava1 status command value "where is joe_smith"
+set appliance house1:kitchen1:ava1 status command value "where is joe_smith" --sam--
 
 # camera detects occupant inactive
 set sensor house1:kitchen1:camera1 status occupant_inactive value joe_smith

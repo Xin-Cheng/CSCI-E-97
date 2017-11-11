@@ -1,7 +1,11 @@
 package cscie97.asn4.housemate.entitlement;
 import cscie97.asn2.housemate.model.CommandLineInterface;
+import cscie97.asn2.housemate.model.HouseMateModelService;
+import cscie97.asn3.housemate.controller.HouseMateControllerService;
+import cscie97.asn3.housemate.controller.ImportException;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -142,6 +146,54 @@ public class CommandLineInterpreter {
 			break;
 		default:
 			break;
+		}
+	}
+	
+	public void triggerEnvent(String eventTriggerFile)  throws ImportException {
+        int lineNumber = 0;
+        String line = null;
+              
+        try {
+    		FileReader fileReader = new FileReader(eventTriggerFile);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            while ((line = bufferedReader.readLine()) != null) {
+                lineNumber++;
+                System.out.println(line);
+                
+                // Trim leading and trailing whitespace
+                line = line.trim();
+                if(!line.isEmpty() && line.charAt(0) != '#') {
+                	interpret(line);
+                }
+            }
+            bufferedReader.close();  
+        } catch (FileNotFoundException e) {
+        	e.printStackTrace();
+        	ImportException ie = new ImportException();
+        	ie.setFilename(eventTriggerFile);
+            ie.setLineNumber(lineNumber);
+            ie.setErrorContent(e.getMessage());
+            throw ie;
+        } catch (IOException e) {
+            e.printStackTrace();
+            ImportException ie = new ImportException();
+            ie.setFilename(eventTriggerFile);
+            ie.setLineNumber(lineNumber);
+            ie.setErrorContent(e.getMessage());
+            throw ie;
+        }
+	}
+    /**
+     * Private method that send event to House Mate Model Service.
+     *
+     * @param command name of the event
+     */	
+	private void interpret(String command){
+		if(command.equals("register")) {
+			HouseMateModelService.getInstance().registerHMCS(HouseMateControllerService.getInstance());
+			System.out.println("Registering HouseMateModelService to HouseMateControllerService...");
+		} else {
+			HouseMateModelService.getInstance().notifyHMCS(command);
 		}
 	}
 }

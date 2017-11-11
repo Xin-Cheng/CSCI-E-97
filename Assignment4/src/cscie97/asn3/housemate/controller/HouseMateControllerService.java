@@ -126,11 +126,11 @@ public class HouseMateControllerService implements IHouseMateControllerService{
 		// ava get voice command
 		if (appNames[2].startsWith("ava")) {
 
-			String on = commandWords[commandWords.length - 1];
+			String on = commandWords[commandWords.length - 2];
 			this.lastWord = on.substring(0, on.length()-1);
 			
 			String voice = "";
-			for(int i = 6; i < commandWords.length; i++) {voice = voice.concat(commandWords[i]);}
+			for(int i = 6; i < commandWords.length-1; i++) {voice = voice.concat(commandWords[i]);}
 			voice = voice.substring(1, voice.length() - 1);
 			
 			if(voice.startsWith("where")) {
@@ -157,6 +157,14 @@ public class HouseMateControllerService implements IHouseMateControllerService{
 					// ava receive command to turn off the light
 					setCommand(appNames[0], appNames[1], lastWord, "lightStatus", "off");
 					System.out.println("Lights in room " + name + " is turned off!");
+				} else if (voice.startsWith("turn_onoven")) {
+					// ava receive command to turn on the oven
+					setCommand(appNames[0], appNames[1], lastWord, "ovenStatus", "on");
+					System.out.println("Oven in room " + name + " is turned on!");
+				} else if (voice.startsWith("turn_offoven")) {
+					// ava receive command to turn off the oven
+					setCommand(appNames[0], appNames[1], lastWord, "ovenStatus", "off");
+					System.out.println("Oven in room " + name + " is turned off!");
 				} else {
 					// general command
 					String applianceName = commandWords[commandWords.length - 2].substring(1);
