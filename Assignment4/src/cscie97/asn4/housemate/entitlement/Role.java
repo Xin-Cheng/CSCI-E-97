@@ -13,6 +13,9 @@ public class Role extends Entitlement{
 		permissions = new ArrayList<>();
 	}
 	
+	public List<Entitlement> getEntitlements(){
+		return permissions;
+	}
 	/**
      * Public method add an entitlement to a role
      * 

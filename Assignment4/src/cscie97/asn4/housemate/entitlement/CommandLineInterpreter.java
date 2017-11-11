@@ -73,9 +73,22 @@ public class CommandLineInterpreter {
             throw ie;
         }
         // test identify
+        AccessToken accessToken = null;
         try {
-        	EntitlementService.getInstance().identify("--sam--");
+        	accessToken = EntitlementService.getInstance().identify("--sam--");
         } catch (EntityNotFoundException e) {
+			e.setFilename(authenticationData);
+			e.setLineNumber(lineNumber);
+			e.printStackTrace();
+		}
+        // test check access
+        try {
+        	EntitlementService.getInstance().checkAccess(accessToken, "house1", "control_oven");
+        } catch (EntityNotFoundException e) {
+			e.setFilename(authenticationData);
+			e.setLineNumber(lineNumber);
+			e.printStackTrace();
+		} catch (InvalidAccessTokenException e) {
 			e.setFilename(authenticationData);
 			e.setLineNumber(lineNumber);
 			e.printStackTrace();

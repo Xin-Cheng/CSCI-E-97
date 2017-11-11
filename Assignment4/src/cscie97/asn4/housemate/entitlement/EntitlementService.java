@@ -1,9 +1,7 @@
 package cscie97.asn4.housemate.entitlement;
 
 import java.util.HashMap;
-import java.util.Iterator;
-
-import com.sun.javafx.collections.MappingChange.Map;
+import java.util.List;
 
 public class EntitlementService {
 	private HashMap<String, Role> roleMap = new HashMap<String, Role>();
@@ -163,7 +161,7 @@ public class EntitlementService {
     }
     
     // Using visitor pattern to identify user
-    public void identify(String credential) throws EntityNotFoundException{
+    public AccessToken identify(String credential) throws EntityNotFoundException{
     	CredentialVisitior visitor = new CredentialVisitior();
     	for(HashMap.Entry<String, User> entry: userMap.entrySet()) {
     		User user = entry.getValue();
@@ -171,8 +169,7 @@ public class EntitlementService {
     		
     		if(visitor.checkCredential(credential)) {
     			System.out.println(">> Credential Verified!!");
-    			authenticate(user);
-    			return;
+    			return user.getAccessToken();
     		}	
     	}
     	EntityNotFoundException entityNotFoundException = new EntityNotFoundException();
@@ -180,12 +177,48 @@ public class EntitlementService {
     	throw entityNotFoundException;
     }
     
-    public AccessToken authenticate(User user){
-    	System.out.println(">> AccessToken of user returned! " + user.getAccessToken().getID());
-    	return user.getAccessToken();
-    }
-    
-    public boolean checkAccess(AccessToken accessToken, Resource resource, Permission permission){
-    	return false;
+    public boolean checkAccess(AccessToken accessToken, String resourceID, String permissionID) throws EntityNotFoundException, InvalidAccessTokenException{
+    	AccessTokenVisitor accessTokenVisitor = new AccessTokenVisitor();
+    	
+    	for(HashMap.Entry<String, User> entry: userMap.entrySet()) {
+    		User user = entry.getValue();
+    		user.accept(accessTokenVisitor);
+    		
+    		// Check if an accessToken is valid
+    		if(accessTokenVisitor.checkAccessToken(accessToken)) {
+    			if(user.getAccessToken().getState().equals("inactive")) {
+    				InvalidAccessTokenException invalidAccessTokenException = new InvalidAccessTokenException();
+    				invalidAccessTokenException.setUserName(user.getName());
+    				throw invalidAccessTokenException;
+    			} else {
+    				// Valid accessToken, check access
+    				ResourceRole resourceRole = user.getResourceRole();
+    				// Check if user has access to a resource.
+    				if(resourceRole.getResource().getID().equals(resourceID)) {
+    					// User has access to this resource, find if the user has this permission
+    					Role role = user.getRole();
+    					List<Entitlement> entitlements = role.getEntitlements();
+    					for (Entitlement entitlement : entitlements) {
+							if(entitlement.getID().equals(permissionID)) {
+								System.out.println(">> User:" + user.getID() + " has access!!");
+								return true;	// User has permission
+							}
+						}
+    					// User do not have permission
+    					System.out.println(">> User:" + user.getID() + " dose not have permission:" + permissionID);
+    					return false;
+    				} else {
+    					// User do not have access to this resource
+    					System.out.println(">> User:" + user.getID() + " dose not have access to Resource:" + resourceID);
+    					return false;
+    				}
+    				
+    			}
+    		}	
+    	}
+    	// AccessToken is not found in system
+    	EntityNotFoundException entityNotFoundException = new EntityNotFoundException();
+    	entityNotFoundException.setEntityName("AccessToken");
+    	throw entityNotFoundException;
     }
 }
