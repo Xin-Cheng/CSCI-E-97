@@ -5,19 +5,27 @@ import cscie97.asn4.housemate.entitlement.AuthenticationSetupException;
 import cscie97.asn4.housemate.entitlement.CommandLineInterpreter;
 import cscie97.asn4.housemate.entitlement.EntitlementService;
 
+/**
+ * Test Driver class to invoke the Entitlement Service.
+ *
+ * @author Xin Cheng
+ */
 public class TestDriver {
     /**
      * Static main for TestDriver
      *
-     * @param args 2 arguments, set up file name, and trigger command file name.
+     * @param args 3 arguments, set up file name, authentication data file and trigger command file name.
      */
     public static void main(String[] args) {
-    	String authenticationData = "authenticationData.txt";
+    	String setupFile = args[0];
+    	String authenticationData = args[1];
+    	String triggerFile = args[2];
+    	
     	CommandLineInterpreter interpreter = new CommandLineInterpreter();
     	try {
-    		interpreter.setupHouse("housesetup.txt");
+    		interpreter.setupHouse(setupFile);
     		interpreter.setupAuthentication(authenticationData);	
-    		interpreter.triggerEnvent("eventTrigger.txt");
+    		interpreter.triggerEnvent(triggerFile);
     	} catch (AuthenticationSetupException e) {
 			System.out.println(e);
 		} catch (ImportException e) {

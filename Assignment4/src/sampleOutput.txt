@@ -1,0 +1,265 @@
+########### Define a test house, room, sensors, occupants appliances, etc ##########################
+# define a new house instance with identifier house1 and street address
+define house house1 address 374 Beacon Street, Boston, MA
+
+# define a new room instance and attach to a house
+define room kitchen1 floor 1 type kitchen house house1 windows 2
+define room living_room1 floor 1 type living_room house house1 windows 3
+define room bedroom1 floor 2 type bedroom house house1 windows 2
+define room dining_room1 floor 1 type dining_room house house1 windows 2
+define room family_room1 floor 1 type family_room house house1 windows 1
+define room bathroom1 floor 1 type bathroom house house1 windows 1
+
+# define a new occupant
+define occupant joe_smith type adult
+
+# add occupant to house
+add occupant joe_smith to_house house1
+
+# create a new sensor in a room
+define sensor smoke_detector1 type smoke_detector room house1:kitchen1
+define sensor smoke_detector2 type smoke_detector room house1:living_room1
+define sensor smoke_detector3 type smoke_detector room house1:bedroom1
+define sensor smoke_detector4 type smoke_detector room house1:dining_room1
+define sensor smoke_detector5 type smoke_detector room house1:family_room1
+define sensor smoke_detector6 type smoke_detector room house1:bathroom1
+
+# create an oven appliance instance
+define appliance oven1 type oven room house1:kitchen1
+
+# create a refrigerator appliance instance
+define appliance refrigerator1 type refrigerator room house1:kitchen1
+
+# create a door appliance instance
+define appliance door1 type door room house1:kitchen1
+
+# create a light appliance instance
+define appliance light1 type light room house1:kitchen1
+
+# create camera sensor instances
+define sensor camera1 type camera room house1:kitchen1
+define sensor camera2 type camera room house1:living_room1
+define sensor camera3 type camera room house1:bedroom1
+define sensor camera4 type camera room house1:dining_room1
+define sensor camera5 type camera room house1:family_room1
+define sensor camera6 type camera room house1:bathroom1
+
+# create ava appliance instances
+define appliance ava1 type ava room house1:kitchen1
+define appliance ava2 type ava room house1:living_room1
+define appliance ava3 type ava room house1:bedroom1
+define appliance ava4 type ava room house1:dining_room1
+define appliance ava5 type ava room house1:family_room1
+define appliance ava6 type ava room house1:bathroom1
+
+# turn the oven on and set the temperature to 350 degrees
+set appliance house1:kitchen1:oven1 status power value ON
+EntityNotFoundException{filename='null', lineNumber=0, errorContent='The entity: AccessToken cannot be found in the system!'}
+house1:kitchen1:oven1has_powerON
+set appliance house1:kitchen1:oven1 status temperature value 350
+EntityNotFoundException{filename='null', lineNumber=0, errorContent='The entity: AccessToken cannot be found in the system!'}
+house1:kitchen1:oven1has_temperature350
+########### Data for authentication test ##########################
+# define roles
+# define_role <role_id> <role_name> <role_description>
+define_role admin_role Admin_Role Has_all_permissions_of_an_administrator
+>> Role: Admin_Role created!
+define_role adult_resident Adult_Resident_Role Has_all_permissions_of_an_adult_resident
+>> Role: Adult_Resident_Role created!
+define_role child_resident Child_Resident_Role Has_all_permissions_of_a_child_resident
+>> Role: Child_Resident_Role created!
+
+# define permissions
+# define_permission <permission_id> <permission_name> <permission_description>
+define_permission user_admin User_Administrator Create_Update_Delete_Users
+>> Permission: User_Administrator created!
+define_permission control_oven Control_Oven Full_Control_of_Oven
+>> Permission: Control_Oven created!
+define_permission control_thermostat Control_Thermostat Full_Control_of_Thermostat
+>> Permission: Control_Thermostat created!
+define_permission control_door Control_Door Full_Control_of_Door
+>> Permission: Control_Door created!
+define_permission control_window Control_Window Full_Control_of_Window
+>> Permission: Control_Window created!
+define_permission control_light Control_Light Full_Control_of_Light
+>> Permission: Control_Light created!
+
+# add entitlement (permission role ) to role
+# add_entitlement_to_role <role_id> <entitlement_id>
+add_entitlement_to_role admin_role user_admin
+>> Permission: User_Administrator added to Role: Admin_Role
+add_entitlement_to_role admin_role control_oven
+>> Permission: Control_Oven added to Role: Admin_Role
+add_entitlement_to_role admin_role control_thermostat
+>> Permission: Control_Thermostat added to Role: Admin_Role
+add_entitlement_to_role admin_role control_door
+>> Permission: Control_Door added to Role: Admin_Role
+add_entitlement_to_role admin_role control_window
+>> Permission: Control_Window added to Role: Admin_Role
+add_entitlement_to_role admin_role control_light
+>> Permission: Control_Light added to Role: Admin_Role
+add_entitlement_to_role adult_resident control_oven
+>> Permission: Control_Oven added to Role: Adult_Resident_Role
+add_entitlement_to_role adult_resident control_light
+>> Permission: Control_Light added to Role: Adult_Resident_Role
+add_entitlement_to_role adult_resident control_thermostat
+>> Permission: Control_Thermostat added to Role: Adult_Resident_Role
+add_entitlement_to_role adult_resident control_door
+>> Permission: Control_Door added to Role: Adult_Resident_Role
+add_entitlement_to_role adult_resident control_window
+>> Permission: Control_Window added to Role: Adult_Resident_Role
+add_entitlement_to_role child_resident control_door
+>> Permission: Control_Door added to Role: Child_Resident_Role
+add_entitlement_to_role child_resident control_window
+>> Permission: Control_Window added to Role: Child_Resident_Role
+add_entitlement_to_role child_resident control_light
+>> Permission: Control_Light added to Role: Child_Resident_Role
+
+# create resource
+# create_resource <resource_id> <resource_name>
+create_resource house1 house1
+>> Resource: house1 created!
+
+# create resource role
+# create_resource_role <resource_role_id> <resource_role_name> <role_id> <resource>
+create_resource_role house1_admin_role house1_admin_role admin_role house1
+>> ResourceRole {Resource: house1, Role: admin_role} created!
+create_resource_role house1_child_resident house1_child_resident child_resident house1
+>> ResourceRole {Resource: house1, Role: child_resident} created!
+create_resource_role house1_adult_resident house1_adult_resident adult_resident house1
+>> ResourceRole {Resource: house1, Role: adult_resident} created!
+
+# create_admin user
+# create_user <role_id> <user_id> <user_name>
+create_user admin_role debra Debra
+>> User{ID = 'debra', name =Debra, role = 'admin_role', credential = 'N/A', resourceRole = 'N/A', accessTokenState = 'active'}
+
+# add user credential
+# add_user_credential <user_id> <voice_print|password> <value>
+add_user_credential debra password secret
+>> User{ID = 'debra', name =Debra, role = 'admin_role', credential = 'password', resourceRole = 'N/A', accessTokenState = 'active'}
+
+# add resource role to user
+# add_resource_role_to_user <user_id> <resource_role>
+add_resource_role_to_user debra house1_admin_role
+>> User{ID = 'debra', name =Debra, role = 'admin_role', credential = 'password', resourceRole = 'house1_admin_role', accessTokenState = 'active'}
+
+# create_user with
+# create_user <role_id> <user_id> <user_name>
+create_user adult_resident sam Sam
+>> User{ID = 'sam', name =Sam, role = 'adult_resident', credential = 'N/A', resourceRole = 'N/A', accessTokenState = 'active'}
+create_user child_resident jimmy Jimmy
+>> User{ID = 'jimmy', name =Jimmy, role = 'child_resident', credential = 'N/A', resourceRole = 'N/A', accessTokenState = 'active'}
+
+# add user credential
+# add_user_credential <user_id> <voice_print|password> <value>
+add_user_credential sam voice_print --sam--
+>> User{ID = 'sam', name =Sam, role = 'adult_resident', credential = 'voice_print', resourceRole = 'N/A', accessTokenState = 'active'}
+add_user_credential jimmy voice_print --jimmy--
+>> User{ID = 'jimmy', name =Jimmy, role = 'child_resident', credential = 'voice_print', resourceRole = 'N/A', accessTokenState = 'active'}
+
+# add resource role to user
+# add_resource_role_to_user <user_id> <resource_role>
+add_resource_role_to_user sam house1_adult_resident
+>> User{ID = 'sam', name =Sam, role = 'adult_resident', credential = 'voice_print', resourceRole = 'house1_adult_resident', accessTokenState = 'active'}
+add_resource_role_to_user jimmy house1_child_resident
+>> User{ID = 'jimmy', name =Jimmy, role = 'child_resident', credential = 'voice_print', resourceRole = 'house1_child_resident', accessTokenState = 'active'}
+
+# logout
+# logout <user_id>
+logout sam
+>> User: 'sam' logged out successfully!
+
+# login with correct credential
+# login <user_id> <voice_print|password> <credential>
+login sam voice_print --sam--
+>> Welcom 'sam'! You are logged in successfully!
+
+# logout
+# logout <user_id>
+logout sam
+>> User: 'sam' logged out successfully!
+
+# login in with wrong credetial, test InvalidCredentialException
+# login <user_id> <voice_print|password> <credential>
+login sam voice_print --xxx--
+
+# login with correct credential
+# login <user_id> <voice_print|password> <credential>
+login sam voice_print --sam--
+>> Welcom 'sam'! You are logged in successfully!
+>> Credential Verified!!
+
+################################# set sensor status to invoke rules in HMCS #########################
+# register HMMS to HMMS
+register
+Registering HouseMateModelService to HouseMateControllerService...
+
+# ask ava to open the door in kitchen1, adult_resident
+set appliance house1:kitchen1:ava1 status command value "open door1" --sam--
+>> Credential Verified!!
+house1:kitchen1:door1has_doorStatusopen
+
+# ask ava to close the door in kitchen1, child_resident
+set appliance house1:kitchen1:ava1 status command value "close door1" --jimmy--
+>> Credential Verified!!
+
+# ask ava to turn on the lights in kitchen1
+set appliance house1:kitchen1:ava1 status command value "turn_on light1" --xxx--
+house1:kitchen1:light1has_lightStatuson
+
+# ask ava to turn on the lights in kitchen1
+set appliance house1:kitchen1:ava1 status command value "turn_off light1" --sam--
+>> Credential Verified!!
+
+# ask ava to turn on the oven in kitchen1, adult_resident
+set appliance house1:kitchen1:ava1 status command value "turn_on oven1" --sam--
+>> Credential Verified!!
+house1:kitchen1:oven1has_ovenStatuson
+
+# ask ava to turn off the oven in kitchen1, adult_resident
+set appliance house1:kitchen1:ava1 status command value "turn_off oven1" --jimmy--
+>> Credential Verified!!
+>> User:jimmy dose not have permission:control_oven
+
+# camera detects occupant in room
+set sensor house1:kitchen1:camera1 status occupant_detected value joe_smith
+Lights in room house1:kitchen1:camera1 is turned on!
+Temperature in room house1:kitchen1:camera1 is increased!
+Knowledge graph is updated!
+
+# ask ava again the location of joe_smith
+set appliance house1:kitchen1:ava1 status command value "where is joe_smith" --sam--
+joe_smith has_location house1:kitchen1.
+
+
+# camera detects occupant inactive
+set sensor house1:kitchen1:camera1 status occupant_inactive value joe_smith
+joe_smith has_status inactive
+Knowledge graph is updated!
+
+# camera detects occupant active
+set sensor house1:kitchen1:camera1 status occupant_active value joe_smith
+joe_smith has_status active
+Knowledge graph is updated!
+
+# camera detects occupant leaving room
+set sensor house1:kitchen1:camera1 status occupant_leaving value joe_smith
+Lights in room house1:kitchen1:camera1 is turned off!
+Temperature in room house1:kitchen1:camera1 is descreased!
+Knowledge graph is updated!
+
+# set fire to the house
+set fire house1:kitchen1
+All lights turned on!
+Ava: Fire in the house, please leave the house immediately
+Calling 911...
+
+# update the beerCount of Refrigerator
+set appliance house1:kitchen1:refrigerator1 status beerCount value 3
+Current beer count is 3
+Sending email requsting more beers...
+
+# set time to cook of oven to zero
+set appliance house1:kitchen1:oven1 status timeToCook value 0
+Ava: Food is ready!
