@@ -1,5 +1,11 @@
 package cscie97.asn4.housemate.entitlement;
 
+/**
+ * Credential class is used in user authentication. 
+ * A Credential contains a name (password and voice print), and value.
+ *
+ * @author Xin Cheng
+ */
 public class Credential {
 	private String name;
 	protected String value;
@@ -21,6 +27,9 @@ public class Credential {
 		return name;
 	}
 	
+	/**
+     * Public getter and setter of private attribute: value
+     */
 	public void setValue(String value){
 		this.value = value;
 	}

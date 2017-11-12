@@ -1,5 +1,11 @@
 package cscie97.asn4.housemate.entitlement;
 
+/**
+ * Instances of this checked exception class are thrown by the CommandLineInterpreter 
+ * when error occurs processing the authentication data file.
+ *
+ * @author Xin Cheng
+ */
 public class AuthenticationSetupException extends Exception{
 	private String filename;
     private int lineNumber;

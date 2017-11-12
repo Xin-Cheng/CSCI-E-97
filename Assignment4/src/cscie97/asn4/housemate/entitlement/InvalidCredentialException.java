@@ -1,5 +1,11 @@
 package cscie97.asn4.housemate.entitlement;
 
+/**
+ * Instances of this checked exception class are thrown by the EntitlementService 
+ * when a credential does not match a user.
+ *
+ * @author Xin Cheng
+ */
 public class InvalidCredentialException extends Exception{
 	private String filename;
     private int lineNumber;

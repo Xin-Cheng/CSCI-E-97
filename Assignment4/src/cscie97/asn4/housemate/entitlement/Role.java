@@ -1,5 +1,11 @@
 package cscie97.asn4.housemate.entitlement;
 
+/**
+ * Role class represents a group of permissions a user have. 
+ * It is a composition of Permissions. User will have all permissions included in a role.
+ *
+ * @author Xin Cheng
+ */
 import java.util.ArrayList;
 import java.util.List;
 

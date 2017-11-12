@@ -1,5 +1,11 @@
 package cscie97.asn4.housemate.entitlement;
 
+/**
+ *  User class represents occupants in the House Mate System. 
+ *  User has a unique id, name, credentials, and associated with Entitlements.
+ *
+ * @author Xin Cheng
+ */
 import java.util.UUID;
 
 public class User implements Element{
@@ -20,6 +26,12 @@ public class User implements Element{
 		this.userFactory = userFactory;
 	}
 	
+	/**
+     * Public method to create a user and set its id and name.
+     * 
+     * @param id unique id of a user
+     * @param name user name
+     */
 	public void create(String id, String name) {
 		setID(id);
 		setName(name);
@@ -27,6 +39,9 @@ public class User implements Element{
 		createAccessToken();
 	}
 	
+	/**
+     * Public method to create a random AccessToken to a user.
+     */
 	public void createAccessToken(){
 		AccessToken accessToken = new AccessToken();
 		accessToken.setID(UUID.randomUUID().toString() + id);
@@ -34,10 +49,16 @@ public class User implements Element{
 		this.accessToken = accessToken;
 	}
 	
+	/**
+	 * Return the AccessToken of  a user.
+	 */
 	public AccessToken getAccessToken(){
 		return accessToken;
 	}
 	
+	/**
+     * Public setter and getter of user credential.
+     */
 	public void setCredential(Credential credential) {
 		this.credential = credential;
 	}
@@ -45,11 +66,20 @@ public class User implements Element{
 	public Credential getCredential(){
 		return credential;
 	}
-		
+	
+	/**
+     * Public setter and getter of resource role of a user.
+     */
 	public void setResourceRole(ResourceRole resourceRole) {
 		this.resourceRole = resourceRole;
 	}
+	public ResourceRole getResourceRole(){
+		return resourceRole;
+	}
 	
+	/**
+     * Public getter and setter of private attribute: name
+     */
 	public void setID(String id) {
 		this.id = id;
 	}
@@ -57,6 +87,9 @@ public class User implements Element{
 		return id;
 	}
 	
+	/**
+     * Public getter and setter of private attribute: name
+     */
 	public void setName(String name){
 		this.name = name;
 	}
@@ -64,14 +97,18 @@ public class User implements Element{
 		return name;
 	}
 	
+	/**
+     * Public getter of Role. Returns the role of a user.
+     */
 	public Role getRole() {
 		return role;
 	}
 	
-	public ResourceRole getResourceRole(){
-		return resourceRole;
-	}
-	
+	/**
+     * Implement the API of Element class. Accept an visitor to visit itself.
+     * 
+     * @param visitor a visitor
+     */
 	public void accept(InventoryVisitor visitor){
 		visitor.visit(this);
 	}

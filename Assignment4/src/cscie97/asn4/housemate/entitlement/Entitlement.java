@@ -1,5 +1,11 @@
 package cscie97.asn4.housemate.entitlement;
 
+/**
+ * Entitlement class represents user’s accessibility to a resource. 
+ * Entitlement has a unique id, name, and description.
+ *
+ * @author Xin Cheng
+ */
 public class Entitlement{
 	private String id;
 	private String name;

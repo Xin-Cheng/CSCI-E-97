@@ -1,5 +1,11 @@
 package cscie97.asn4.housemate.entitlement;
 
+/**
+ * UsernamePassworkCredential class is a type of Credential class. 
+ * It is the Credential of an Administrator resident. 
+ *
+ * @author Xin Cheng
+ */
 public class UsernamePassworkCredential extends Credential{
 	/**
      * Public default constructor
